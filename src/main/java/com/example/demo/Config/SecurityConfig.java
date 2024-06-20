@@ -34,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/login", "/css/**", "/js/**").permitAll()
                 .antMatchers("/orders", "/seller/products/bill-of-sell/**","/seller/products/bill-of-buy/**", "/customer", "/cashier-profile", "/warranty").hasRole("CASHIER")
-                .antMatchers("/dashboard", "/manager/products", "/staff","/counter/**", "/promotion", "/manager/products/create-product", "/manager/products/detail-product/**", "/staff/create-new-staff", "/staff/edit-staff-profile","/manager-profile").hasRole("MANAGER")
-                .antMatchers("/seller/products", "/orders/listOfOrder", "/products/detail-product/**", "/orders/purchaseOrderDetail/**", "/orders/new-sell-order", "/orders/NewPurchaseOrder", "/orders/NewPurchaseOrder/save","/seller-profile").hasRole("SELLER")
+                .antMatchers("/dashboard", "/manager/products", "/staff","/counter/**", "/promotion", "/manager/products/create-product/**", "/manager/products/detail-product/**", "/staff/create-new-staff/**", "/staff/edit-staff-profile/**","/manager-profile/**").hasRole("MANAGER")
+                .antMatchers("/seller/products", "/orders/listOfOrder", "/products/detail-product/**", "/orders/purchaseOrderDetail/**", "/orders/new-sell-order/**","/orders/sellOrderDetail/**", "/orders/NewPurchaseOrder/**","/seller-profile").hasRole("SELLER")
                 .anyRequest().authenticated()
             .and()
             .formLogin()
@@ -70,4 +70,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new HttpSessionEventPublisher();
     }
 }
-
