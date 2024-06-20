@@ -48,10 +48,14 @@ public class Order {
     
     @Column(name = "OrderstatusID")
     private int OrderstatusID;
+    
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<PurchaseDetail> purchaseDetails;
+
 
     @OneToMany(mappedBy = "orderID", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     private List<OrderDetail> orderDetails;
 
-	}
+}
 
 
