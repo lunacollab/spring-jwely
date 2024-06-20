@@ -69,53 +69,49 @@ function validateForm() {
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
     const phoneRegex = /^\d+$/;
     const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
-    const alphanumericRegex = /^[a-zA-Z]+$/;
+    const alphaRegex = /^[a-zA-Z ]+$/; // Chỉ chấp nhận chữ cái và khoảng trắng
     let isValid = true;
+    
     if (orderDate === '') {
         document.getElementById('order-date-error').innerText = "Date is not empty";
         isValid = false;
-    }else if(!dateRegex.test(orderDate)){
-		 document.getElementById('order-date-error').innerText = "Date is not valid(yyyy-mm-dd)";
+    } else if (!dateRegex.test(orderDate)) {
+        document.getElementById('order-date-error').innerText = "Date is not valid(yyyy-mm-dd)";
         isValid = false;
-	} else {
+    } else {
         document.getElementById('order-date-error').innerText = "";
     }
 
-    if (staffName === '' ) {
+    if (staffName === '') {
         document.getElementById('staff-name-error').innerText = "Staff name is not empty.";
         isValid = false;
-    }else if(!alphanumericRegex.test(staffName)){
-		 document.getElementById('staff-name-error').innerText = "Staff name only contain letters.";
+    } else if (!alphaRegex.test(staffName)) {
+        document.getElementById('staff-name-error').innerText = "Staff name only contain letters and spaces.";
         isValid = false;
-	}
-     else if(specialCharRegex.test(staffName)){
-		document.getElementById('staff-name-error').innerText = "Not contain special characters.";
+    } else if (specialCharRegex.test(staffName)) {
+        document.getElementById('staff-name-error').innerText = "Not contain special characters.";
         isValid = false;
-	}
-    else {
+    } else {
         document.getElementById('staff-name-error').innerText = "";
     }
-    
+
     if (customerName === '') {
         document.getElementById('customer-name-error').innerText = "Customer name is not empty.";
         isValid = false;
-    }else if(!alphanumericRegex.test(customerName)){
-		 document.getElementById('customer-name-error').innerText = "Customer name only contain letters.";
+    } else if (!alphaRegex.test(customerName)) {
+        document.getElementById('customer-name-error').innerText = "Customer name only contain letters and spaces.";
         isValid = false;
-	}
-    else if(specialCharRegex.test(customerName)){
-		 document.getElementById('customer-name-error').innerText = "Not contain special characters.";
+    } else if (specialCharRegex.test(customerName)) {
+        document.getElementById('customer-name-error').innerText = "Not contain special characters.";
         isValid = false;
-	}
-     else {
+    } else {
         document.getElementById('customer-name-error').innerText = "";
     }
-    
-    if(phoneNumber === '' ){
-		document.getElementById('phone-number-error').innerText = "Phone number is not empty.";
+
+    if (phoneNumber === '') {
+        document.getElementById('phone-number-error').innerText = "Phone number is not empty.";
         isValid = false;
-	}
-    else if(!phoneRegex.test(phoneNumber)) {
+    } else if (!phoneRegex.test(phoneNumber)) {
         document.getElementById('phone-number-error').innerText = "Phone number should contain only digits.";
         isValid = false;
     } else {
@@ -124,6 +120,7 @@ function validateForm() {
 
     return isValid;
 }
+
 document.addEventListener("DOMContentLoaded", function() {
     calculateTotal();
     const orderDate = localStorage.getItem("order-date");
