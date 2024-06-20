@@ -124,16 +124,16 @@ public class OrderController {
         model.addAttribute("order",order);
         return "seller/purchaseOrderDetail";
     }
-    @GetMapping("counter")
+    @GetMapping("/counter")
     public String counterList() {
     	return "manager/counterList";
     }
-    @GetMapping("counter/counterDetail")
+    @GetMapping("/counter/counterDetail")
     public String counterDetail() {
     	return "manager/counterDetail";
     }
     
-    @GetMapping("seller/products/bill-of-sell/{orderID}") 
+    @GetMapping("/seller/products/bill-of-sell/{orderID}") 
     public String showBillOfSellById(@PathVariable Integer orderID, Model model) { 
         Order order = orderService.findOrderById(orderID).orElseThrow(() -> new RuntimeException("Order not found")); 
         model.addAttribute("order",order);
@@ -158,7 +158,7 @@ public class OrderController {
         model.addAttribute("order",order);
         return "cashier/BillofSell";
     }
-    @GetMapping("seller/products/bill-of-buy/{orderID}")
+    @GetMapping("/seller/products/bill-of-buy/{orderID}")
     public String showBillOfBuy(@PathVariable Integer orderID, Model model) {
     	   Order order = orderService.findOrderById(orderID)
                    .orElseThrow(() -> new RuntimeException("Order not found"));
@@ -184,4 +184,9 @@ public class OrderController {
         model.addAttribute("order",order);
         return "cashier/BillofBuy";
     }
+    @GetMapping("/orders/sell-gold-order")
+    public String sellGoldOrder() {
+    	return "seller/SellGoldOrder";
+    }
+
 }
