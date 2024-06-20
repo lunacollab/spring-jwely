@@ -53,4 +53,5 @@ public class Product {
     
     @OneToMany(mappedBy = "productID", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderDetail> orderDetails;
+
 }

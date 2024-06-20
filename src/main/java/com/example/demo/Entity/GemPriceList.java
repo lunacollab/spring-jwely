@@ -18,6 +18,7 @@ public class GemPriceList {
     @JoinColumn(name = "gemID", referencedColumnName = "gemID", insertable = false, updatable = false)
     private Gem gem;
 
+
     @Column(name = "gemID")
     private int gemID;
 
