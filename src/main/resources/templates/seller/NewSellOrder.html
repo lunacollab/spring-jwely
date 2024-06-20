@@ -90,7 +90,7 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <div id="dropdown" class="dropdown-content">
                         <ol>
-                            <li th:each="product: ${products}">
+                            <li th:each="product: ${products}" th:if="${product.isActive == true}">
                                 <div th:data-order="${product}" th:text="${product.productName}"
                                     th:attr="data-product-id=${product.productID}"
                                     onclick="selectProduct(this.textContent, this.getAttribute('data-product-id'))"></div>

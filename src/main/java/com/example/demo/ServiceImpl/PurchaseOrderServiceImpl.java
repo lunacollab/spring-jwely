@@ -38,56 +38,58 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
 	@Override
 	public void savePurchaseOrder(PurchaseOrderDTO purchaseOrderDTO) {
-		Order order = new Order();
-		int quantity = 0;
-		double total = (double)( purchaseOrderDTO.getDiamondPrice()+purchaseOrderDTO.getGoldPrice());
-		order.setTotal(total);
-		
-		if (!purchaseOrderDTO.getMaterialName().isBlank())
-		{
-			quantity+=1;
-		}
-		if (!purchaseOrderDTO.getDiamondCode().isBlank())
-		{
-			quantity+=1;
-		}
-		order.setQuantity(quantity);
-		order.setStaffID(7);
-		order.setOrderstatusID(1);
-		order.setDate(new Date());
-		order.setType(true);
-		int lpoitn = 0;
-		String phone = purchaseOrderDTO.getPhoneNumber();
-		String name = purchaseOrderDTO.getCustomerName();
-		Customer cus = customerService.insertOrUpdateCustomer(phone, name, lpoitn);
-		order.setCustomerID(cus.getCustomerID());
-		List<PurchaseDetail> purchaseDetails = new ArrayList<>();
-	        if (purchaseOrderDTO.getDiamondCode() != null && !purchaseOrderDTO.getDiamondCode().isEmpty()) {
-	            Gem gem = gemService.getGemByGemCode(purchaseOrderDTO.getDiamondCode());
-	            if (gem != null) {
-	                PurchaseDetail gemDetail = new PurchaseDetail();
-	                gemDetail.setGem(gem);
-	                gemDetail.setGemPrice(purchaseOrderDTO.getDiamondPrice());
-	                gemDetail.setProductName("Diamond"); 
-	                gemDetail.setOrder(order);
-	                purchaseDetails.add(gemDetail);
-	            }
-	        }
-	        if (purchaseOrderDTO.getMaterialName() != null && !purchaseOrderDTO.getMaterialName().isEmpty()) {
-	            Material material = materialService.getMaterialByName(purchaseOrderDTO.getMaterialName());
-	            if (material != null) {
-	                PurchaseDetail materialDetail = new PurchaseDetail();
-	                materialDetail.setMaterial(material);
-	                materialDetail.setMaterialPrice(purchaseOrderDTO.getGoldPrice());
-	                materialDetail.setWeight(purchaseOrderDTO.getWeight());
-	                materialDetail.setProductName("Material"); 
-	                materialDetail.setOrder(order);
-	                purchaseDetails.add(materialDetail);
-	            }
-	        }
+	    Order order = new Order();
+	    int quantity = 0;
+	    double total = (double)( purchaseOrderDTO.getDiamondPrice() + purchaseOrderDTO.getGoldPrice());
+	    order.setTotal(total);
 
+	    if (!purchaseOrderDTO.getMaterialName().isBlank()) {
+	        quantity += 1;
+	    }
+	    if (!purchaseOrderDTO.getDiamondCode().isBlank()) {
+	        quantity += 1;
+	    }
+	    order.setQuantity(quantity);
+	    order.setStaffID(7);
+	    order.setOrderstatusID(1);
+	    order.setDate(new Date());
+	    order.setType(true);
+	    int lpoint = 0;
+	    String phone = purchaseOrderDTO.getPhoneNumber();
+	    String name = purchaseOrderDTO.getCustomerName();
+	    Customer cus = customerService.insertOrUpdateCustomer(phone, name, lpoint);
+	    order.setCustomerID(cus.getCustomerID());
+
+	    List<PurchaseDetail> purchaseDetails = new ArrayList<>();
+	    if (purchaseOrderDTO.getDiamondCode() != null && !purchaseOrderDTO.getDiamondCode().isEmpty()) {
+	        Gem gem = gemService.getGemByGemCode(purchaseOrderDTO.getDiamondCode());
+	        if (gem != null) {
+	            PurchaseDetail gemDetail = new PurchaseDetail();
+	            gemDetail.setGem(gem);
+	            gemDetail.setGemPrice(purchaseOrderDTO.getDiamondPrice());
+	            gemDetail.setProductName("Diamond"); 
+	            gemDetail.setOrder(order); 
+	            purchaseDetails.add(gemDetail);
+	        }
+	    }
+	    if (purchaseOrderDTO.getMaterialName() != null && !purchaseOrderDTO.getMaterialName().isEmpty()) {
+	        Material material = materialService.getMaterialByName(purchaseOrderDTO.getMaterialName());
+	        if (material != null) {
+	            PurchaseDetail materialDetail = new PurchaseDetail();
+	            materialDetail.setMaterial(material);
+	            materialDetail.setMaterialPrice(purchaseOrderDTO.getGoldPrice());
+	            materialDetail.setWeight(purchaseOrderDTO.getWeight());
+	            materialDetail.setProductName("Material"); 
+	            materialDetail.setOrder(order); 
+	            purchaseDetails.add(materialDetail);
+	        }
+	    }
 	    order.setPurchaseDetails(purchaseDetails);
-	    orderRepository.save(order);
+	    for (PurchaseDetail purchaseDetail : purchaseDetails) {
+	        purchaseDetail.setOrder(order);
+	    }
 
+	    orderRepository.save(order);
 	}
+
 }

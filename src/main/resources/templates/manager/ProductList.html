@@ -86,14 +86,11 @@
                             </a>
                         </td>
                           <td>
-                            <form th:action="@{'products/delete/' + ${product.productID}}" method="post">
+                            <form th:action="@{'/manager/products/' + ${product.productID} + '/soldOut'}" method="post">
     <button type="submit" class="delete-btn">
         <i class="fa-solid fa-trash"></i>
     </button>
 </form>
-   <div th:if="${deleteSuccess}">
-                    <p>Delete successful!</p>
-                </div>
                         </td>
                     </tr>
                 </tbody>
