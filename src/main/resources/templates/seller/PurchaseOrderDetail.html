@@ -79,34 +79,35 @@
                 </div>
             </div>
         </div>
-        <div class="bill-group " th:each="orderDetail : ${order.orderDetails}">
+        <div class="bill-group " th:each="purchaseDetail : ${order.purchaseDetails}">
             <div class="bill-title-first">Diamond</div>
             <div class="form-group" >
                 <div class="row">
                     <div class="col-3">
                         <label>Name Product</label>
-                        <input type="text" th:value="${orderDetail.product.gemPriceList.gem.gemName}" class="form-control" />
+                        <input type="text" th:value="${purchaseDetail.gem.gemName}" class="form-control" />
                     </div>
                     <div class="col-3">
                         <label>Origin</label>
-                         <input type="text" th:value="${orderDetail.product.gemPriceList.gem.origin}" class="form-control" />
+                         <input type="text" th:value="${purchaseDetail.gem.origin}" class="form-control" />
                     </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-3">
                         <label>Carat</label>
-                         <input type="text" th:value="${orderDetail.product.gemPriceList.gem.carat}" class="form-control" />
+                         <input type="text" th:value="${purchaseDetail.gem.carat}" class="form-control" />
                     </div>
                     <div class="col-3">
                         <label>Color</label>
-                        <input type="text" th:value="${orderDetail.product.gemPriceList.gem.color}" class="form-control" />
+                        <input type="text" th:value="${purchaseDetail.gem.color}" class="form-control" />
+                      </div>  
                     <div class="col-3">
                         <label>Clarity</label>
-                        <input type="text" th:value="${orderDetail.product.gemPriceList.gem.clarity}" class="form-control" />
+                        <input type="text" th:value="${purchaseDetail.gem.clarity}" class="form-control" />
                     </div>
                     <div class="col-3">
                         <label>Cut</label>
-                         <input type="text" th:value="${orderDetail.product.gemPriceList.gem.cut}" class="form-control" />
+                         <input type="text" th:value="${purchaseDetail.gem.cut}" class="form-control" />
                     </div>
                 </div>
             </div>
@@ -115,15 +116,11 @@
                 <div class="row">
                     <div class="col-3">
                         <label>Name Product</label>
-                        <input type="text" th:value="${orderDetail.product.materialPriceList.material.name}" class="form-control" />
-                    </div>
-                    <div class="col-3">
-                        <label>Type Gold</label>
-                        <input type="text" th:value="${orderDetail.product.type.typeName}" class="form-control" />
+                        <input type="text" th:value="${purchaseDetail.material.name}" class="form-control" />
                     </div>
                     <div class="col-3">
                         <label>Weight</label>
-                        <input type="text" th:value="${orderDetail.product.weight}" class="form-control" />
+                        <input type="text" th:value="${purchaseDetail.weight}" class="form-control" />
                     </div>
                 </div>
             </div>
@@ -135,8 +132,8 @@
                     <p class="total">Total price: </p>
                 </div>
                 <div class="total-right">
-                    <p  th:text="${orderDetail.product.gemPriceList.buyPrice}"></p>
-                    <p  th:text="${orderDetail.product.materialPriceList.buyPrice}"></p>
+                    <p  th:text="${purchaseDetail.gemPrice}"></p>
+                    <p  th:text="${purchaseDetail.materialPrice}"></p>
                     <p class="total-child" th:text="${order.total}"></p>
                 </div>
             </div>

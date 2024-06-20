@@ -56,14 +56,13 @@ public class PurchaseOrderController {
 							gem.getGemPriceLists().get(gem.getGemPriceLists().size() - 1).getBuyPrice());
 				}
 			}else {
-	            // Reset specific fields if gem is null
 				purchaseOrderDTO.setDiamondCode(dimondCode);
-				purchaseOrderDTO.setOrigin(null); // Reset origin
-				purchaseOrderDTO.setCarat(0); // Reset carat
-				purchaseOrderDTO.setClarity(null); // Reset clarity
-				purchaseOrderDTO.setColor(null); // Reset color
-				purchaseOrderDTO.setCut(null); // Reset cut
-				purchaseOrderDTO.setDiamondPrice(0); // Reset diamond price
+				purchaseOrderDTO.setOrigin(null); 
+				purchaseOrderDTO.setCarat(0);
+				purchaseOrderDTO.setClarity(null); 
+				purchaseOrderDTO.setColor(null);
+				purchaseOrderDTO.setCut(null);
+				purchaseOrderDTO.setDiamondPrice(0); 
 	        }
 		}
 		model.addAttribute("purchaseOrderDTO", purchaseOrderDTO);
