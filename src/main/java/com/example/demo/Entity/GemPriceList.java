@@ -14,7 +14,7 @@ public class GemPriceList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer gemPriceListID;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinColumn(name = "gemID", referencedColumnName = "gemID", insertable = false, updatable = false)
     private Gem gem;
 

@@ -25,6 +25,6 @@ public class Gem {
     private String clarity;
     private String cut;
 
-    @OneToMany(mappedBy = "gem")
+    @OneToMany(mappedBy = "gem",cascade = CascadeType.ALL)
     private List<GemPriceList> gemPriceLists;
 }

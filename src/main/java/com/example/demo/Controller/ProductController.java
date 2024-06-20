@@ -8,6 +8,9 @@ import com.example.demo.Service.MaterialPriceListService;
 import com.example.demo.Service.ProductService;
 import com.example.demo.Service.TypeService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;

@@ -30,9 +30,10 @@ public class Product {
     @Column(name = "categoryID")
     private int categoryID;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "gemPriceListID", referencedColumnName = "gemPriceListID", insertable = false, updatable = false)
     private GemPriceList gemPriceList;
+
 
     @Column(name = "gemPriceListID")
     private Integer gemPriceListID;

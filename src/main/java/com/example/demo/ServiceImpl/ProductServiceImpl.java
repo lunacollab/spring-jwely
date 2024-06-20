@@ -54,6 +54,7 @@ public class ProductServiceImpl implements ProductService {
     public Page<Product> findAll(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
+   
     @Override
     public List<Product> findAllProduct() {
         return productRepository.findAll();
@@ -107,21 +108,22 @@ public class ProductServiceImpl implements ProductService {
      
     @Override
     public void saveProduct(Product product) {
-//    	 if (product.getType() != null 
-//    	            && product.getType().getTypeName().equals("Gold") 
-//    	            && product.getGemPriceListID() != null) {
-//    	      
-//    	    }
-//    	   GemPriceList gemPriceList = entityManager.getReference(GemPriceList.class, 1);
+    	 if (product.getType() != null && product.getType().getTypeName().equals("Gold")&& product.getGemPriceList() != null)  { 
+    		 product.setGemPriceListID(1);
+    		 product.setOrderType("Sell");
+    		 product.setActive(true);
+ 	    }
     	
-    	GemPriceList gemPriceList = entityManager.getReference(GemPriceList.class, 1);
-//
-        product.setGemPriceListID(1);
-    	 System.out.println("Saved Product:");
-    	    System.out.println("ID: " + product.getCategoryID());
-    	    System.out.println("Name: " + gemPriceList.getGemPriceListID());
-    	    product.setGemPriceListID(gemPriceList.getGemPriceListID());
-        productRepository.save(product);
+    		 product.setGemPriceListID(2);
+             product.getGemPriceList().getGem().setGemCode("GEM001");
+             product.getGemPriceList().getGem().setGemName("Diamond");
+    		 product.setOrderType("Sell");
+    		 product.setActive(true);
+    		 
+    		 
+             productRepository.save(product);
+ 
+    	
     }     
     @Override
     public void deleteProductById(Integer id) {
