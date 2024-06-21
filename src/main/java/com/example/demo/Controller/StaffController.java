@@ -18,7 +18,7 @@ public class StaffController {
 	   }
 	  
 	  @GetMapping("/staff")    
-	  public String showProductSeller(Model model, @RequestParam(defaultValue = "0") int page) {
+	  public String showStaffList(Model model, @RequestParam(defaultValue = "0") int page) {
 	         Page<Staff> staffPage = staffService.findAll(PageRequest.of(page, 10));
 	         model.addAttribute("staffs", staffPage.getContent());
 	         model.addAttribute("currentPage", staffPage.getNumber());

@@ -2,10 +2,12 @@ package com.example.demo.Controller;
 
 
 import com.example.demo.Entity.Product;
+import com.example.demo.Entity.Promotion;
 import com.example.demo.Service.CategoryService;
 import com.example.demo.Service.GemPriceListService;
 import com.example.demo.Service.MaterialPriceListService;
 import com.example.demo.Service.ProductService;
+import com.example.demo.Service.PromotionService;
 import com.example.demo.Service.TypeService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,14 +26,16 @@ public class ProductController {
     private final GemPriceListService gemPriceListService;
     private final MaterialPriceListService materialPriceListService;
     private final TypeService typeService;
+    private final PromotionService promotionService;
 
     public ProductController(ProductService productService, CategoryService categoryService,GemPriceListService gemPriceListService,
-    		MaterialPriceListService materialPriceListService,TypeService typeService ) {
+    		MaterialPriceListService materialPriceListService,TypeService typeService,PromotionService promotionService ) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.gemPriceListService = gemPriceListService;
         this.materialPriceListService = materialPriceListService;
         this.typeService = typeService;
+        this.promotionService = promotionService;
     }
     @GetMapping("seller/products")
     public String showProductSeller(Model model, @RequestParam(defaultValue = "0") int page) {
@@ -105,9 +109,19 @@ public class ProductController {
     	return "manager/dashboard";
     }
     @GetMapping("/promotion")
-    public String showPromotion() {
-        return "manager/promotion";
-    }
+	public String showPromotionList(Model model, @RequestParam(defaultValue = "0") int page) {
+		Page<Promotion> promotionPage = promotionService.findAll(PageRequest.of(page, 10));
+		model.addAttribute("promotions", promotionPage);
+		model.addAttribute("currentPage", promotionPage.getNumber());
+		model.addAttribute("totalPages", promotionPage.getTotalPages());
+	   	 model.addAttribute("promotion", new Promotion());
+		return "manager/promotion";
+     }
+    @PostMapping("/promotion")
+ 	public String savePromotionList(Model model,Promotion promotion) {
+    	 promotionService.save(promotion); 
+ 		return "manager/promotion";
+      }
     @GetMapping("/price-list")
     public String showPriceList() {
         return "manager/priceList";

@@ -41,17 +41,6 @@ public class Staff {
     @Column(name = "counter_id")
     private int counterID;
     
-    public String getGenderLabel() {
-        switch (this.gender) {
-            case 1:
-                return "Female";
-            case 2:
-                return "Male";
-            case 3:
-                return "Other";
-            default:
-                return "Unknown";
-        }
-    }
+
   
 }

@@ -5,6 +5,7 @@ import com.example.demo.Service.StaffService;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,9 +14,10 @@ import org.springframework.stereotype.Service;
 import com.example.demo.Entity.Staff;
 @Service
 public class StaffServiceImpl implements StaffService {
-	
-	private final StaffRepository staffRepository;
-	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	@Autowired
+	private StaffRepository staffRepository;
+	@Autowired
+	private  BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	public StaffServiceImpl (StaffRepository staffRepository,BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.staffRepository = staffRepository;

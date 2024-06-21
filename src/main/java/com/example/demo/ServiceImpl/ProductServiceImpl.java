@@ -106,16 +106,19 @@ public class ProductServiceImpl implements ProductService {
     		 product.setGemPriceListID(1);
     		 product.setOrderType("Sell");
     		 product.setActive(true);
- 	    }
-    	
-    		 product.setGemPriceListID(2);
-             product.getGemPriceList().getGem().setGemCode("GEM001");
-             product.getGemPriceList().getGem().setGemName("Diamond");
-    		 product.setOrderType("Sell");
-    		 product.setActive(true); 
-    		 
-    		 
              productRepository.save(product);
+ 	    }else {
+ 	  	 product.setGemPriceListID(2);
+ 	  	 product.getGemPriceList().getGem().setGemName("Diamond");
+ 	  	 product.getGemPriceList().getGem().setOrigin("Natural");
+         product.getGemPriceList().getGem().setGemCode("GEM001");
+		 product.setOrderType("Sell");
+		 product.setActive(true); 	
+		 productRepository.save(product);
+ 	    }
+    	 
+    		 
+
  
     	
     }     

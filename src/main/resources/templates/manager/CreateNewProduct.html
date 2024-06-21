@@ -70,18 +70,16 @@
         <div class="form-group">
             <label for="type">Type</label>
             <select class="form-control" id="type" th:field="*{typeID}">
-                <option th:each="type : ${types}"
-                        th:value="${type.typeID}"
-                        th:text="${type.typeName}"></option>
+               <option value="1" th:selected="${product.typeID} == 1">Jewelry</option>
+                <option value="2" th:selected="${product.typeID} == 2">Gold</option>
             </select>
         </div>
         <div id="jewelry-fields" style="display: none;">
             <div class="form-group">
                 <label for="origin">Origin</label>
                 <select class="form-control" id="origin" th:field="*{gemPriceList.gemID}" >
-                    <option th:each="products : ${products}"
-                            th:value="${products.gemPriceList.gemID}"
-                            th:text="${products.gemPriceList.gem.origin}"></option>
+                     <option value="1" th:selected="${product.gemPriceList.gemID} == 1">Natural</option>
+                <option value="2" th:selected="${product.gemPriceList.gemID} == 2">Artifical</option>
                 </select>
             </div>
             <div class="form-group">
