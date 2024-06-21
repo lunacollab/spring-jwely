@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
-                .antMatchers("/login", "/css/**", "/js/**").permitAll()
+                .antMatchers("/login", "/css/**", "/js/**","/encode-password/**").permitAll()
                 .antMatchers("/orders", "/seller/products/bill-of-sell/**","/seller/products/bill-of-buy/**", "/customer", "/cashier-profile", "/warranty").hasRole("CASHIER")
                 .antMatchers("/dashboard", "/manager/products", "/staff","/counter/**", "/promotion", "/manager/products/create-product/**", "/manager/products/detail-product/**", "/staff/create-new-staff/**", "/staff/edit-staff-profile/**","/manager-profile/**").hasRole("MANAGER")
                 .antMatchers("/seller/products", "/orders/listOfOrder", "/products/detail-product/**", "/orders/purchaseOrderDetail/**", "/orders/new-sell-order/**","/orders/sellOrderDetail/**", "/orders/NewPurchaseOrder/**","/seller-profile").hasRole("SELLER")
@@ -62,8 +62,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailsService).passwordEncoder(NoOpPasswordEncoder.getInstance());
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(customUserDetailsService).passwordEncoder(NoOpPasswordEncoder.getInstance());
+//    }
 
     @Bean
     public HttpSessionEventPublisher httpSessionEventPublisher() {

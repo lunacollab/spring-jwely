@@ -8,4 +8,6 @@ import com.example.demo.Entity.Staff;
 @Repository
 public interface StaffRepository extends JpaRepository<Staff, Integer> {
     Staff findByEmail(String email);
+
+	boolean existsByEmail(String email);
 }
