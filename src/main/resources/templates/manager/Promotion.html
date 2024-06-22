@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Promotion</title>
-    <link rel="stylesheet" th:href="@{/css/Promotion.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    <link rel="stylesheet" th:href="@{/css/Promotion.css}" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-            <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -27,126 +27,129 @@
                     </div>
                 </div>
             </div>
-             <a  class="link-product" th:href="@{/dashboard}"><p>Dashboard</p></a>
-             <a  class="link-product" th:href="@{/manager/products}"><p>Manage Product</p></a>
-            <a  class="link-product" th:href="@{/staff}"><p>Manage Staff</p></a>
+            <a class="link-product" th:href="@{/dashboard}"><p>Dashboard</p></a>
+            <a class="link-product" th:href="@{/manager/products}"><p>Manage Product</p></a>
+            <a class="link-product" th:href="@{/staff}"><p>Manage Staff</p></a>
             <p class="active">Promotion</p>
-             <a  class="link-product" th:href="@{/counter}"><p>Manage Counter</p></a>
+            <a class="link-product" th:href="@{/counter}"><p>Manage Counter</p></a>
             <p>Manage Category</p>
             <p>Manage Material</p>
         </div>
-          <form th:action="@{/perform_logout}" method="post">
-            <button type="submit"> 
+        <form th:action="@{/perform_logout}" method="post">
+            <button type="submit">
                 <i class="fa-solid fa-right-from-bracket"></i> Log out
             </button>
         </form>
     </div>
     <div class="content">
         <div class="content-group">
-        <div class="bill-header">
-            <h1>Promotion</h1>
-        </div>
-        <div class="bill-details">
-                        <div class="staff">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <input class="staff-input" id="searchInput" onkeyup="searchProducts()" placeholder="Search by promotion name..." />
-</div>
-
-            <div class="create">
-                <button class="btn-create"  onclick="showPasswordModal()">Create</button>
+            <div class="bill-header">
+                <h1>Promotion</h1>
             </div>
-        </div>
-        <div class="bill-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Promotion Name</th>
-                        <th>Promotion ID</th>
-                        <th>Promotion code</th>
-                        <th>Discount Rate</th>
-                        <th>Start date</th>
-                        <th>End date</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-            <tr th:each="promotion : ${promotions}">
-                <td th:text="${promotion.promotionName}"></td>
-                <td th:text="${promotion.promotionID}"></td>
-                <td th:text="${promotion.promotionCode}"></td>
-                <td th:text="${#dates.format(promotion.startDate, 'yyyy-MM-dd')}"></td>
-                <td th:text="${#dates.format(promotion.endDate, 'yyyy-MM-dd')}"></td>
-                <td th:text="${promotion.promotionPercent}"></td>
-                <td>
-                <button th:class="${promotion.status ? 'status complete' : 'status pending'}">
-                <span class="sf"><i class="fa-solid fa-circle"></i></span>
-                <span th:text="${promotion.status ? 'On' : 'Off'}"></span>
-                </button>
-               </td>
-              </tr>
-                </tbody>
-            </table>
-        </div>
-          <div class="pagination-container">
-    <div class="previous">
-        <a th:if="${currentPage > 0}" th:href="@{/promotion(page=${currentPage - 1 })}">
-            <button class="btn-previous"> <i class="fa-solid fa-arrow-left i-left"></i>Previous</button>
-        </a>
-    </div>
-    <div class="pages">
-    <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
-          th:class="${pageNumber == currentPage ? 'page-active' : ''}">
-        <a th:href="@{/promotion(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
-    </span>
-</div>
-    <div class="next">
-        <a th:if="${currentPage < totalPages - 1}" th:href="@{/promotion(page=${currentPage + 1})}">
-            <button class="btn-next"> Next <i class="fa-solid fa-arrow-right i-right"></i></button>
-        </a>
-    </div>
-</div>
+            <div class="bill-details">
+                <div class="staff">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input class="staff-input" id="searchInput" onkeyup="searchProducts()"
+                        placeholder="Search by promotion name..." />
+                </div>
+
+                <div class="create">
+                    <button class="btn-create" th:onclick="showPasswordModal()">Create</button>
+                </div>
+            </div>
+            <div class="bill-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Promotion Name</th>
+                            <th>Promotion ID</th>
+                            <th>Promotion code</th>
+                            <th>Discount Rate</th>
+                            <th>Start date</th>
+                            <th>End date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="promotion : ${promotions}">
+                            <td th:text="${promotion.promotionName}"></td>
+                            <td th:text="${promotion.promotionID}"></td>
+                            <td th:text="${promotion.promotionCode}"></td>
+                            <td th:text="${promotion.promotionPercent}"></td>
+                            <td th:text="${#dates.format(promotion.startDate, 'yyyy-MM-dd')}"></td>
+                            <td th:text="${#dates.format(promotion.endDate, 'yyyy-MM-dd')}"></td>
+                            <td>
+                                <button th:class="${promotion.status} ? 'status complete' : 'status pending'">
+                                    <span class="sf"><i class="fa-solid fa-circle"></i></span>
+                                    <span th:text="${promotion.status} ? 'On' : 'Off'"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination-container">
+                <div class="previous">
+                    <a th:if="${currentPage > 0}" th:href="@{/promotion(page=${currentPage - 1 })}">
+                        <button class="btn-previous"> <i class="fa-solid fa-arrow-left i-left"></i>Previous</button>
+                    </a>
+                </div>
+                <div class="pages">
+                    <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:class="${pageNumber == currentPage} ? 'page-active' : ''">
+                        <a th:href="@{/promotion(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+                    </span>
+                </div>
+                <div class="next">
+                    <a th:if="${currentPage < totalPages - 1}" th:href="@{/promotion(page=${currentPage + 1})}">
+                        <button class="btn-next"> Next <i class="fa-solid fa-arrow-right i-right"></i></button>
+                    </a>
+                </div>
+            </div>
         </div>
         <div id="passwordModal" class="container">
             <div class="container">
                 <div class="row justify-content-center">
-                    <form action="/promotion" method="post" id="promotionForm" class="col-5 passwordForm" th:object="${promotion}">
-                        <span class="close" onclick="hidePasswordModal()">&times;</span>
+                    <form action="/promotion" method="post" id="promotionForm" class="col-5 passwordForm"
+                        th:object="${promotion}">
+                        <span class="close" th:onclick="hidePasswordModal()">&times;</span>
                         <div class="text-center create-new-password">Create Promotion </div>
-                          <div class="group mt-4">
-        <div class="row">
-            <div class="col-6 form-group">
-                <label>Name</label>
-                <input type="text" th:field="*{promotionName}" class="form-control" required>
-            </div>
-            <div class="col-6 form-group">
-                <label>Code</label>
-                <input type="text" th:field="*{promotionCode}" class="form-control" required>
-            </div>
-        </div>
-        <div class="row mt-2">
-            <div class="col-6 form-group">
-                <label>Discount rate</label>
-                <input type="text" th:field="*{promotionPercent}" class="form-control" required>
-            </div>
-             <div class="col-6 form-group">
-                <label>Rank</label>
-                <input type="text" th:field="*{applyFor}" class="form-control" required>
-            </div>
-        </div>
-        <div class="row mt-2">
-            <div class="col-6 form-group">
-                <label>Start Date</label>
-                <input type="date" th:field="*{startDate}" class="form-control" required>
-            </div>
-            <div class="col-6 form-group">
-                <label>End Date</label>
-                <input type="date" th:field="*{endDate}" class="form-control" required>
-            </div>
-        </div>
-        <div class="col-12 text-center">
-            <button type="submit" class="btn btn-save-password">Save</button>
-        </div>
-    </div>
+                        <div class="group mt-4">
+                            <div class="row">
+                                <div class="col-6 form-group">
+                                    <label>Name</label>
+                                    <input type="text" th:field="*{promotionName}" class="form-control" required />
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label>Code</label>
+                                    <input type="text" th:field="*{promotionCode}" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-6 form-group">
+                                    <label>Discount rate</label>
+                                    <input type="text" th:field="*{promotionPercent}" class="form-control"
+                                        required />
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label>Rank</label>
+                                    <input type="text" th:field="*{applyFor}" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-6 form-group">
+                                    <label>Start Date</label>
+                                    <input type="date" th:field="*{startDate}" class="form-control" required />
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label>End Date</label>
+                                    <input type="date" th:field="*{endDate}" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-save-password">Save</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

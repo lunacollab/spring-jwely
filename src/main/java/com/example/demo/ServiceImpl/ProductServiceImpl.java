@@ -102,24 +102,29 @@ public class ProductServiceImpl implements ProductService {
      
     @Override
     public void saveProduct(Product product) {
-    	 if (product.getType() != null && product.getType().getTypeName().equals("Gold")&& product.getGemPriceList() != null)  { 
-    		 product.setGemPriceListID(1);
-    		 product.setOrderType("Sell");
-    		 product.setActive(true);
-             productRepository.save(product);
- 	    }else {
- 	  	 product.setGemPriceListID(2);
- 	  	 product.getGemPriceList().getGem().setGemName("Diamond");
- 	  	 product.getGemPriceList().getGem().setOrigin("Natural");
-         product.getGemPriceList().getGem().setGemCode("GEM001");
-		 product.setOrderType("Sell");
-		 product.setActive(true); 	
-		 productRepository.save(product);
- 	    }
+        if (product.getTypeID() == 2) {
+            product.setGemPriceListID(null);
+            product.getGemPriceList().getGem().setCut(null);
+            product.getGemPriceList().getGem().setClarity(null);
+            product.getGemPriceList().getGem().setColor(null);
+            product.setOrderType("Sell");
+            product.setActive(true);
+            productRepository.save(product);
+        } 
+        if( product.getTypeID() == 1 && product.getGemPriceList() != null){
+            product.setGemPriceListID(2);
+            product.getGemPriceList().getGem().setGemName("Diamond");
+            product.getGemPriceList().getGem().setOrigin("Natural");
+            product.getGemPriceList().getGem().setGemCode("GEM001");
+            product.setOrderType("Sell");
+            product.setActive(true);
+            productRepository.save(product);
+        }
+    }
     	 
     		 
 
  
     	
     }     
-}
+

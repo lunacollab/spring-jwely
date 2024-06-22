@@ -52,7 +52,7 @@ public class ProductController {
         Page<Product> productPage = productService.findAll(PageRequest.of(page, 10));
         model.addAttribute("products", productPage.getContent());
         model.addAttribute("currentPage", productPage.getNumber());
-        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("totalPages", productPage.getTotalPages()); 
         return "manager/productList";
     }
     @GetMapping("seller/products/detail-product/{productID}") 
@@ -109,19 +109,20 @@ public class ProductController {
     	return "manager/dashboard";
     }
     @GetMapping("/promotion")
-	public String showPromotionList(Model model, @RequestParam(defaultValue = "0") int page) {
-		Page<Promotion> promotionPage = promotionService.findAll(PageRequest.of(page, 10));
-		model.addAttribute("promotions", promotionPage);
-		model.addAttribute("currentPage", promotionPage.getNumber());
-		model.addAttribute("totalPages", promotionPage.getTotalPages());
-	   	 model.addAttribute("promotion", new Promotion());
-		return "manager/promotion";
-     }
+    public String showPromotionList(Model model, @RequestParam(defaultValue = "0") int page) {
+        Page<Promotion> promotionPage = promotionService.findAll(PageRequest.of(page, 10));
+        model.addAttribute("promotions", promotionPage); 
+        model.addAttribute("currentPage", promotionPage.getNumber());
+        model.addAttribute("totalPages", promotionPage.getTotalPages()); 
+        model.addAttribute("promotion", new Promotion()); 
+        return "manager/promotion";
+    }
+
     @PostMapping("/promotion")
  	public String savePromotionList(Model model,Promotion promotion) {
     	 promotionService.save(promotion); 
  		return "manager/promotion";
-      }
+     }
     @GetMapping("/price-list")
     public String showPriceList() {
         return "manager/priceList";

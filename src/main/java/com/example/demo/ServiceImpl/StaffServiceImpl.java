@@ -24,7 +24,7 @@ public class StaffServiceImpl implements StaffService {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 
 	}
-	   @Override
+	    @Override
 	    public Page<Staff> findAll(Pageable pageable) {
 	        return staffRepository.findAll(pageable);
 	    }

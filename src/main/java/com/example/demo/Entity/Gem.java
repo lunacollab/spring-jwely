@@ -15,8 +15,6 @@ public class Gem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int gemID;
-    
-    @NotNull
     private String gemCode;
     private String gemName;
     private String origin;
