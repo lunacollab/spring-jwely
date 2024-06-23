@@ -112,7 +112,7 @@ public class ProductController {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 	       Staff staff = staffRepository.findByEmail(email);
 	       model.addAttribute("staff", staff);
-        return "manager/productList";
+	       return "redirect:/manager/products";
     }
 
     @GetMapping("manager/products/create-product")
@@ -164,7 +164,7 @@ public class ProductController {
 	       Staff staff = staffRepository.findByEmail(email);
 	       model.addAttribute("staff", staff);
     	 promotionService.save(promotion); 
- 		return "manager/promotion";
+    	 return "redirect:/promotion";
      }
     @GetMapping("/price-list")
     public String showPriceList() {
