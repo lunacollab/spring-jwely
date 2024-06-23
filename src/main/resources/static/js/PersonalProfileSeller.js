@@ -2,6 +2,9 @@ function showPasswordModal() {
   document.getElementById("passwordModal").style.display = "block";
   document.querySelector(".profile").classList.add("overlay"); // Thêm lớp overlay vào phần tử profile
 }
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("passwordModal").style.display = "none";
+});
 
 function hidePasswordModal() {
   document.getElementById("passwordModal").style.display = "none";

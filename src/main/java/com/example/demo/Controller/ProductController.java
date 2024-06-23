@@ -98,6 +98,9 @@ public class ProductController {
         productService.updateProduct(product);
         model.addAttribute("product", product);
         model.addAttribute("updateSuccess", true); 
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
         return "manager/detailProduct"; 
     }
 
@@ -106,6 +109,9 @@ public class ProductController {
         Product product = productService.findById(productID).orElseThrow(() -> new RuntimeException("Product not found")); 
         product.setActive(false);
         productService.updateProduct(product);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
         return "manager/productList";
     }
 
@@ -127,6 +133,9 @@ public class ProductController {
     public String saveroduct(Product product,Model model) {
         productService.saveProduct(product);
         model.addAttribute("product",product);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
         return "manager/createNewProduct";
     }
     @GetMapping("/dashboard")
@@ -151,6 +160,9 @@ public class ProductController {
 
     @PostMapping("/promotion")
  	public String savePromotionList(Model model,Promotion promotion) {
+    	 String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
     	 promotionService.save(promotion); 
  		return "manager/promotion";
      }

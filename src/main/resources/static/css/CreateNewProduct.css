@@ -22,6 +22,10 @@
             text-decoration: none;
 		}
 
+.pagination-container a:focus,
+.pagination-container a:hover {
+    outline: none; 
+}
 
 
         .profile-container {

@@ -10,18 +10,18 @@ import com.example.demo.Service.PasswordEncoderService;
 
 @Controller
 public class LoginController {
-//    @Autowired
-//    private PasswordEncoderService passwordEncoderService;
+    @Autowired
+    private PasswordEncoderService passwordEncoderService;
 
   @GetMapping("/login")
   public String loginPage() {
 	  return "login/login";
   }
   
-//  @GetMapping("/encode-password")
-//  @ResponseBody
-//  public String encodePassword(@RequestParam String password) {
-//      String encodedPassword = passwordEncoderService.encodePassword(password);
-//      return "Encoded Password: " + encodedPassword;
-//  }
+  @GetMapping("/encode-password")
+  @ResponseBody
+  public String encodePassword(@RequestParam String password) {
+      String encodedPassword = passwordEncoderService.encodePassword(password);
+      return "Encoded Password: " + encodedPassword;
+  }
 }

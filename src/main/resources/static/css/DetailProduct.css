@@ -38,6 +38,11 @@
             line-height  : 27px;
             margin-bottom: 30px;
         }
+        .pagination-container a:focus,
+.pagination-container a:hover {
+    outline: none; 
+}
+        
 
         .sidebar-title .active {
             background   : #ffff;

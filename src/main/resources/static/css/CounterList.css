@@ -15,6 +15,12 @@
             height          : 120vh;
             line-height     : 30px;
         }
+          .sidebar-title .active {
+            background   : #ffff;
+            padding      : 10px 0;
+            border-radius: 10px;
+        }
+        
 
         .sidebar .sidebar-title {
             cursor         : pointer;
@@ -26,6 +32,10 @@
             justify-content: flex-start;
             margin-top     : 20px;
         }
+.pagination-container a:focus,
+.pagination-container a:hover {
+    outline: none; 
+}
 
        .sidebar .sidebar-profile {
     display: flex;
@@ -412,7 +422,7 @@
             background-color: #26C75D;
         }
 
-        .pagination-container {
+       .pagination-container {
             display        : flex;
             height         : 47px;
             align-items    : center;
@@ -458,7 +468,7 @@
         .pagination-container .next {
             margin-right: 15px
         }
-
+      
         .cancel-button:hover,
         .print-button:hover {
             opacity: 0.8;

@@ -139,6 +139,9 @@ public class OrderController {
 		orderDTOs = new OrderDTO();
 		addedProductIds = new HashSet<>();
 		lProduct.clear();
+		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
+         Staff staff = staffRepository.findByEmail(email);
+         model.addAttribute("staff", staff);
 		return "seller/newSellOrder"; 
 
 	}
@@ -152,6 +155,7 @@ public class OrderController {
 	       Staff staff = staffRepository.findByEmail(email);
 	       model.addAttribute("staff", staff);
 		model.addAttribute("order", order);
+		
 		return "seller/sellOrderDetail";
 	}
 	
@@ -164,6 +168,9 @@ public class OrderController {
 		order.setOrderstatusID(2);
 		orderService.updateOrder(order);
 		model.addAttribute("order", order);
+		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
+         Staff staff = staffRepository.findByEmail(email);
+         model.addAttribute("staff", staff);
 		return "seller/sellOrderDetail";
 	}
 
@@ -183,6 +190,9 @@ public class OrderController {
 		order.setOrderstatusID(2);
 		orderService.updateOrder(order);
 		model.addAttribute("order", order);
+		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
+         Staff staff = staffRepository.findByEmail(email);
+         model.addAttribute("staff", staff);
 		return "seller/purchaseOrderDetail";
 	}
 
@@ -219,6 +229,9 @@ public class OrderController {
 		order.setTotal(totalAmount);
 		orderService.updateOrder(order);
 		model.addAttribute("order", order);
+		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
+         Staff staff = staffRepository.findByEmail(email);
+         model.addAttribute("staff", staff);
 		return "cashier/BillofSell";
 	}
 
@@ -228,6 +241,9 @@ public class OrderController {
 		order.setOrderstatusID(4);
 		orderService.updateOrder(order);
 		model.addAttribute("order", order);
+		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
+         Staff staff = staffRepository.findByEmail(email);
+         model.addAttribute("staff", staff);
 		return "cashier/BillofSell";
 	}
 
@@ -238,6 +254,7 @@ public class OrderController {
 	       Staff staff = staffRepository.findByEmail(email);
 	       model.addAttribute("staff", staff);
 		model.addAttribute("order", order);
+		
 		return "cashier/BillofBuy";
 	}
 
@@ -249,6 +266,9 @@ public class OrderController {
 		order.setTotal(totalAmount);
 		orderService.updateOrder(order);
 		model.addAttribute("order", order);
+		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
+         Staff staff = staffRepository.findByEmail(email);
+         model.addAttribute("staff", staff);
 		return "cashier/BillofBuy";
 	}
 
@@ -258,6 +278,9 @@ public class OrderController {
 		order.setOrderstatusID(1);
 		orderService.updateOrder(order);
 		model.addAttribute("order", order);
+		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
+         Staff staff = staffRepository.findByEmail(email);
+         model.addAttribute("staff", staff);
 		return "cashier/BillofBuy";
 	}
 

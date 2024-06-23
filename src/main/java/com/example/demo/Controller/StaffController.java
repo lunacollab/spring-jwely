@@ -44,13 +44,16 @@ public class StaffController {
 	    public String createNewStaff(Model model) {
 	          model.addAttribute("staff", new Staff());
 	          String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		       Staff staff = staffRepository.findByEmail(email);
-		       model.addAttribute("staffs", staff);
+		       Staff staffs = staffRepository.findByEmail(email);
+		       model.addAttribute("staffs", staffs);
 	        return "manager/createNewStaff";
 	    }
 	  
 	    @PostMapping("/staff/create-new-staff/save")
-	    public String saveNewStaff(@ModelAttribute Staff staff) {
+	    public String saveNewStaff(@ModelAttribute Staff staff,Model model) {
+	    	 String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	         Staff staffs = staffRepository.findByEmail(email);
+	         model.addAttribute("staffs", staffs);
 	        staffService.save(staff);
 	        return "manager/createNewStaff";
 	    }
@@ -66,6 +69,9 @@ public class StaffController {
 	   }
 	   @PostMapping("/staff/edit-staff-profile/{staffID}/save")
 	   public String updateStaffProfile(@PathVariable Integer staffID, @ModelAttribute Staff staff, Model model) throws Exception {
+		   String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staffs = staffRepository.findByEmail(email);
+	       model.addAttribute("staffs", staffs);
 		    staffService.update(staff);
 		    return"manager/editStaffProfile";
 	   }

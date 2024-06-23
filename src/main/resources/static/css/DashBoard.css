@@ -25,6 +25,10 @@
             flex   : 1;
             padding: 15px;
         }
+.pagination-container a:focus,
+.pagination-container a:hover {
+    outline: none; 
+}
 
         .card+.card {
             border-left: 1px solid #ddd;

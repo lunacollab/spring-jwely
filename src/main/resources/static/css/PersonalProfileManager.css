@@ -15,6 +15,12 @@
             height          : 930px;
             line-height     : 30px;
         }
+         .sidebar-title .active {
+            background   : #ffff;
+            padding      : 10px 0;
+            border-radius: 10px;
+        }
+        
 
         .profile-container .img-profile {
             background   : url("../../assets/HeroImage.png") no-repeat center center;

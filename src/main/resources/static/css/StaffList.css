@@ -443,6 +443,10 @@
         .pagination-container .i-left {
             margin-right: 10px;
         }
+.pagination-container a:focus,
+.pagination-container a:hover {
+    outline: none; 
+}
 
         .pagination-container .i-right {
             margin-left: 10px;

@@ -69,6 +69,9 @@ public class PurchaseOrderController {
 		List<Material> materials = new ArrayList<>();
 		materials = materialService.getAllMaterials();
 		model.addAttribute("materials", materials);		
+		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
 		return "seller/NewPurchaseOrder";
 
 	}
@@ -76,7 +79,7 @@ public class PurchaseOrderController {
 	
 	@GetMapping("/orders/updatePrice")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> updatePrice(@RequestParam int typeGold, @RequestParam float weight) {
+	public ResponseEntity<Map<String, Object>> updatePrice(@RequestParam int typeGold, @RequestParam float weight,Model model) {
 		Optional<Material> material = materialService.getMaterialById(typeGold);
 		
 	    float goldPrice = weight * (material.get().getMaterialPriceLists().get(material.get().getMaterialPriceLists().size()-1).getBuyPrice()); 
@@ -84,6 +87,9 @@ public class PurchaseOrderController {
 	    purchaseOrderDTO.setGoldPrice(goldPrice);
 	    Map<String, Object> response = new HashMap<>();
 	    response.put("goldPrice", goldPrice);
+	    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
 	    return ResponseEntity.ok(response);
 	}
 	
@@ -105,6 +111,9 @@ public class PurchaseOrderController {
 		
 		List<Material> materials = new ArrayList<>();
 		materials = materialService.getAllMaterials();
+		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
 		model.addAttribute("materials", materials);		
 		model.addAttribute("purchaseOrder", purchaseOrderDTO);
 		return "seller/NewPurchaseOrder";
@@ -173,6 +182,9 @@ public class PurchaseOrderController {
 	@PostMapping("/orders/new-pur-gold/save")
 	public String saveNewPurchaseGold(@Valid @ModelAttribute("purchaseOrderGoldDto") PurchaseOrderGoldDto purchaseOrderGoldDto, BindingResult result,
 			Model model) {	
+		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
 		
 		purchaseOrderGoldDto=purchaseSaveGoldDto;
 		purchaseOrderService.savePurGold(purchaseOrderGoldDto);
