@@ -51,7 +51,7 @@ function submitForm() {
 function calculateTotal() {
     let totalPrice = 0;
     document.querySelectorAll('tbody tr').forEach(row => {
-        const price = parseFloat(row.cells[5].innerText.replace(/,/g, '')) || 0;
+        const price = parseFloat(row.cells[6].innerText.replace(/,/g, '')) || 0;
         totalPrice += price;
     });
     document.getElementById('total-price').value = totalPrice.toFixed(1);

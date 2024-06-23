@@ -3,15 +3,20 @@ package com.example.demo.Controller;
 
 import com.example.demo.Entity.Product;
 import com.example.demo.Entity.Promotion;
+import com.example.demo.Entity.Staff;
+import com.example.demo.Repository.StaffRepository;
 import com.example.demo.Service.CategoryService;
 import com.example.demo.Service.GemPriceListService;
 import com.example.demo.Service.MaterialPriceListService;
 import com.example.demo.Service.ProductService;
 import com.example.demo.Service.PromotionService;
 import com.example.demo.Service.TypeService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +33,8 @@ public class ProductController {
     private final MaterialPriceListService materialPriceListService;
     private final TypeService typeService;
     private final PromotionService promotionService;
+    @Autowired
+    private StaffRepository staffRepository;
 
     public ProductController(ProductService productService, CategoryService categoryService,GemPriceListService gemPriceListService,
     		MaterialPriceListService materialPriceListService,TypeService typeService,PromotionService promotionService ) {
@@ -44,6 +51,9 @@ public class ProductController {
         model.addAttribute("products", productPage.getContent());
         model.addAttribute("currentPage", productPage.getNumber());
         model.addAttribute("totalPages", productPage.getTotalPages());
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
         return "seller/productList";
     }
   
@@ -56,12 +66,18 @@ public class ProductController {
         model.addAttribute("products", productPage.getContent());
         model.addAttribute("currentPage", productPage.getNumber());
         model.addAttribute("totalPages", productPage.getTotalPages()); 
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
         return "manager/productList";
     }
     @GetMapping("seller/products/detail-product/{productID}") 
     public String showProductDetailSeller(@PathVariable Integer productID, Model model) { 
         Product product = productService.findById(productID).orElseThrow(() -> new RuntimeException("Product not found")); 
         model.addAttribute("product", product);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
         return "seller/detailProduct";
     }
 
@@ -69,6 +85,9 @@ public class ProductController {
     public String showProductDetail(@PathVariable Integer productID, Model model) { 
         Product product = productService.findById(productID).orElseThrow(() -> new RuntimeException("Product not found")); 
         model.addAttribute("product", product);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
         return "manager/detailProduct";
     }
     
@@ -98,6 +117,9 @@ public class ProductController {
          model.addAttribute("materialPriceLists", materialPriceListService.getAllMaterialPriceLists());
          model.addAttribute("types", typeService.getAllTypes());
          model.addAttribute("products", productService.findAllProduct());
+         String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
         return "manager/createNewProduct";
     }
 
@@ -108,7 +130,10 @@ public class ProductController {
         return "manager/createNewProduct";
     }
     @GetMapping("/dashboard")
-    public String showDashboard() {
+    public String showDashboard(Model model) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
     	return "manager/dashboard";
     }
     @GetMapping("/promotion")
@@ -118,6 +143,9 @@ public class ProductController {
         model.addAttribute("currentPage", promotionPage.getNumber());
         model.addAttribute("totalPages", promotionPage.getTotalPages()); 
         model.addAttribute("promotion", new Promotion()); 
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
         return "manager/promotion";
     }
 

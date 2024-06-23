@@ -9,17 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PurchaseOrderDTO {
-	private String diamondCode;
-    private float carat;
-    private String clarity;
-    private String color;
-    private String cut;
-    private String gemCode;
-    private String origin;
+	
     
     private Integer typeGold;
     private String materialName;
-    
+    private int staffId;
     private float weight;
     private float diamondPrice;
     private float goldPrice;
