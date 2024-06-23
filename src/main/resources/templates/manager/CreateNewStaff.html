@@ -26,8 +26,8 @@
             <a class="link-product" th:href="@{/manager/products}"><p>Manage Product</p></a>
             <p class="active">Manage Staff</p>
             <a class="link-product" th:href="@{/promotion}"><p>Promotion</p></a>
+            <a  class="link-product" th:href="@{/manager-profile}"><p>Personal Profile</p></a>
             <a class="link-product" th:href="@{/counter}"><p>Manage Counter</p></a>
-            <p>Manage Category</p>
             <p>Manage Material</p>
         </div>
         <form th:action="@{/perform_logout}" method="post">
@@ -88,7 +88,6 @@
                         <div class="form-group col-md-6">
                             <label for="roleID">Role</label>
                             <select class="form-control" id="roleID" th:field="*{roleID}">
-                                <option value="1" th:selected="${staff.roleID == 1}">Manager</option>
                                 <option value="2" th:selected="${staff.roleID == 2}">Seller</option>
                                 <option value="4" th:selected="${staff.roleID == 4}">Cashier</option>
                             </select>

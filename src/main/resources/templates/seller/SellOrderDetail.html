@@ -25,12 +25,11 @@
                     </div>
                 </div>
             </div>
-            <a class="link-product" th:href="@{/orders/listOfOrder}">
-                <p>List Of Order</p>
-            </a>
+            <p class="active">List Of Order</p>
             <a class="link-product" th:href="@{/seller/products}">
                 <p>Product List as Counter</p>
             </a>
+             <a class="link-product" th:href="@{/seller-profile}"><p>Personal Profile</p></a>
         </div>
            <form th:action="@{/perform_logout}" method="post">
             <button type="submit"> 

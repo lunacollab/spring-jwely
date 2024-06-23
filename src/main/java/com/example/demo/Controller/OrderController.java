@@ -2,6 +2,8 @@ package com.example.demo.Controller;
 
 import com.example.demo.Entity.Order;
 import com.example.demo.Entity.Product;
+import com.example.demo.Entity.Staff;
+import com.example.demo.Repository.StaffRepository;
 import com.example.demo.Service.OrderService;
 import com.example.demo.Service.ProductService;
 import com.example.demo.dto.OrderDTO;
@@ -14,8 +16,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +34,8 @@ public class OrderController {
 	private OrderService orderService;
 	private ProductService productService;
 	private OrderDTO orderDTOs;
+	   @Autowired
+	    private StaffRepository staffRepository;
 
 	public OrderController(OrderService orderService, ProductService productService) {
 		this.orderService = orderService;
@@ -42,6 +48,9 @@ public class OrderController {
 		model.addAttribute("orders", orderPage);
 		model.addAttribute("currentPage", orderPage.getNumber());
 		model.addAttribute("totalPages", orderPage.getTotalPages());
+		    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
 		return "cashier/historyOrder";
 	}
 
@@ -76,7 +85,7 @@ public class OrderController {
 
 		List<Product> products = productService.findAllProduct();
 		model.addAttribute("products", products);
-		model.addAttribute("orderDto", orderDTOs); // Updated attribute name
+		model.addAttribute("orderDto", orderDTOs); 
 		return "seller/newSellOrder";
 	}
 
@@ -87,8 +96,7 @@ public class OrderController {
 		orderDTOs.setCustomerName(orderDTO.getCustomerName());
 		orderService.saveProductFromOrder(orderDTOs);
 		orderDTOs = null;
-		return "seller/newSellOrder"; // Redirect to another page after saving
-
+		return "seller/newSellOrder"; 
 	}
 	
 	@GetMapping("/orders/SellOrderDetail/{orderID}")
@@ -137,6 +145,9 @@ public class OrderController {
     public String showBillOfSellById(@PathVariable Integer orderID, Model model) { 
         Order order = orderService.findOrderById(orderID).orElseThrow(() -> new RuntimeException("Order not found")); 
         model.addAttribute("order",order);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Staff staff = staffRepository.findByEmail(email);
+        model.addAttribute("staff", staff);
         return "cashier/BillofSell";
     }
     @PostMapping("/seller/products/bill-of-sell/{orderID}/print")
@@ -163,6 +174,9 @@ public class OrderController {
     	   Order order = orderService.findOrderById(orderID)
                    .orElseThrow(() -> new RuntimeException("Order not found"));
     	   model.addAttribute("order",order);
+    	   String email = SecurityContextHolder.getContext().getAuthentication().getName();
+           Staff staff = staffRepository.findByEmail(email);
+           model.addAttribute("staff", staff);
     	return "cashier/BillofBuy";
     }
     @PostMapping("/seller/products/bill-of-buy/{orderID}/print")

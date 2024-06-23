@@ -11,6 +11,7 @@ import com.example.demo.Service.PromotionService;
 import com.example.demo.Service.TypeService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +50,9 @@ public class ProductController {
 
     @GetMapping("manager/products")
     public String showProductList(Model model, @RequestParam(defaultValue = "0") int page) {
-        Page<Product> productPage = productService.findAll(PageRequest.of(page, 10));
+    	Page<Product> productPage = productService.findAll(
+    	        PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "productID"))
+    	    );
         model.addAttribute("products", productPage.getContent());
         model.addAttribute("currentPage", productPage.getNumber());
         model.addAttribute("totalPages", productPage.getTotalPages()); 

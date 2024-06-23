@@ -19,7 +19,7 @@ document.getElementById("saving-profile").addEventListener("submit", function(ev
           body: formData,
       }).then(response => {
           if (response.ok) {
-             window.location.href = "/manager-profile"
+             window.location.href = "/seller-profile"
           } else {
               alert("An error occurred while updating the profile.");
           }
