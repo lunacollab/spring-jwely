@@ -36,6 +36,10 @@
 .pagination-container a:hover {
     outline: none; 
 }
+    .pagination-container a {
+    text-decoration: none; 
+    color: inherit; 
+}
 
        .sidebar .sidebar-profile {
     display: flex;

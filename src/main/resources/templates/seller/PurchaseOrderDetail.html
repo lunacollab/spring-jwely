@@ -31,10 +31,10 @@
 					</div>
 				</div>
 			</div>
-			<p class="active">List Of Order</p>
-			<a class="link-product" th:href="@{/seller/products}"><p>Product
-					List as Counter</p></a>
-					<a class="link-product" th:href="@{/seller-profile}"><p>Personal Profile</p></a>
+			 <a class="link-product" th:href="@{/orders/listOfOrder}"><p>List Of Sell Order</p></a>
+	           <p class="active">List Of Purchase Order</p>
+              <a class="link-product" th:href="@{/seller/products}"><p>Product List as Counter</p></a>
+               <a class="link-product" th:href="@{/seller-profile}"><p>Personal Profile</p></a>
 		</div>
 		<form th:action="@{/perform_logout}" method="post">
 			<button type="submit">
@@ -142,7 +142,7 @@
                 body: formData
             }).then(response => {
                 if (response.ok) {
-                    window.location.href =  `/orders/listOfOrder`;
+                    window.location.href =  '/orders/listOfPurchaseOrder';
                 } else {
                     alert('Failed to save the order. Please try again.');
                 }

@@ -4,6 +4,7 @@ import com.example.demo.Entity.Order;
 import com.example.demo.Entity.OrderDetail;
 import com.example.demo.Entity.Product;
 import com.example.demo.Entity.Staff;
+import com.example.demo.Repository.OrderRepository;
 import com.example.demo.Repository.StaffRepository;
 import com.example.demo.Service.OrderService;
 import com.example.demo.Service.ProductService;
@@ -39,6 +40,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class OrderController {
 	@Autowired
     private StaffRepository staffRepository;
+	 @Autowired
+	  private OrderRepository orderRepository;
+
    private OrderService orderService;
 	private ProductService productService;
 	private OrderDTO orderDTOs;
@@ -68,7 +72,7 @@ public class OrderController {
 
 	@GetMapping("/orders/listOfOrder")
 	public String showOrderList(Model model, @RequestParam(defaultValue = "0") int page) {
-		Page<Order> orderPage = orderService.getAllOrders(PageRequest.of(page, 10));
+		Page<Order> orderPage = orderRepository.findByOrderCodeStartingWithS(PageRequest.of(page, 10));
 		model.addAttribute("orders", orderPage);
 		model.addAttribute("currentPage", orderPage.getNumber());
 		model.addAttribute("totalPages", orderPage.getTotalPages());
@@ -77,6 +81,17 @@ public class OrderController {
          model.addAttribute("staff", staff);
 		return "seller/listOfOrder";
 	}
+	    @GetMapping("/orders/listOfPurchaseOrder")
+	    public String showPurchaseOrderList(Model model, @RequestParam(defaultValue = "0") int page) {
+	        Page<Order> orderPage = orderRepository.findByOrderCodeStartingWithP(PageRequest.of(page, 10));
+	        model.addAttribute("orders", orderPage);
+	        model.addAttribute("currentPage", orderPage.getNumber());
+	        model.addAttribute("totalPages", orderPage.getTotalPages());
+	        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	        Staff staff = staffRepository.findByEmail(email);
+	        model.addAttribute("staff", staff);
+	        return "seller/listOfPurchaseOrder";
+	    }
 
 	private Set<Integer> addedProductIds = new HashSet<>();
 

@@ -25,7 +25,7 @@ function updatePrice() {
             body: formData
         }).then(response => {
             if (response.ok) {
-                window.location.href = '/orders/listOfOrder';
+                window.location.href = '/orders/listOfPurchaseOrder';
             } else {
                 alert('Failed to save the order. Please try again.');
             }

@@ -23,5 +23,14 @@ function submitForm() {
         alert('An error occurred. Please try again.');
     });
 }
-
-
+document.addEventListener("DOMContentLoaded", function() {
+        function calculateTotalPrice() {
+            let total = 0;
+            const priceElements = document.querySelectorAll('.orderDetail-price');
+            priceElements.forEach(function(priceElement) {
+                total += parseFloat(priceElement.textContent) || 0;
+            });
+            document.getElementById('total-price').value = total.toFixed(2);
+        }
+        calculateTotalPrice();
+    });

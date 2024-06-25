@@ -51,6 +51,7 @@
             flex-direction : column;
             justify-content: flex-start;
             margin-top     : 20px;
+            line-height: 50px;
         }
 
         .sidebar .sidebar-title .sidebar-profile {

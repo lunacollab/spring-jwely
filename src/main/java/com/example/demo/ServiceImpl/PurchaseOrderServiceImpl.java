@@ -62,7 +62,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
 		order.setQuantity(quantity);
 		order.setStaffID(purchaseOrderDTO.getStaffId());
-		order.setOrderstatusID(2);
+		order.setOrderstatusID(1);
 		order.setQuantity(1);
 		order.setDate(new Date());
 		order.setType(true);

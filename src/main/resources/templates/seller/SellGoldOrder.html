@@ -4,8 +4,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SellOrderDetail</title>
-<link rel="stylesheet" th:href="@{/css/SellOrderDetail.css}">
+<title>SellGoldOrder</title>
+<link rel="stylesheet" th:href="@{/css/NewSellGold.css}">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 	integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
@@ -29,8 +29,9 @@
 				</div>
 			</div>
 
-				<p class="active">List Of Order</p>
-		 <a class="link-product" th:href="@{/seller/products}">
+				<p class="active">List Of Sell Order</p>
+				  <a class="link-historyOrder" th:href="@{/orders/listOfPurchaseOrder}"><p>List Of Purchase Order</p></a>
+		 <a class="link-historyOrder" th:href="@{/seller/products}">
 				<p>Product List as Counter</p>
 			</a>
 			<a class="link-historyOrder" th:href="@{/seller-profile}"><p>Personal Profile</p></a>
@@ -44,7 +45,7 @@
 	<div class="content">
 		<div class="content-header">
 			<div class="bill-header">
-				<h1>Sell Order Detail</h1>
+				<h1>Sell Gold Order</h1>
 				<div class="title-file">
 					<i class="fa-regular fa-file"></i> <span
 						th:text="'#Order:' + ${purchaseOrderGoldDto.order.orderID}"></span>
@@ -62,7 +63,7 @@
 					<div class="first-input">
 						<label>Order Date <i class="fa-solid fa-calendar-days"></i></label>
 						<div>
-							<input type="text" th:value="${purchaseOrderGoldDto.order.date}"
+							<input type="text" th:value="${#dates.format(purchaseOrderGoldDto.order.date, 'yyyy-MM-dd')}" 
 								class="input-order" readonly>
 						</div>
 					</div>
@@ -96,6 +97,7 @@
 			</div>
 			<div class="container-price-bill">
 				<div class="bill-table">
+				<div class="title-product-sell">List Product Sold</div>
 					<table>
 						<thead>
 							<tr>
@@ -154,7 +156,7 @@
 								<td th:text="${orderDetail.product.materialPriceList.material.name}"></td>
 								<td th:text="${orderDetail.product.weight}"></td>
 								<td th:text="${orderDetail.product.gemPriceList.gem.carat}"></td>
-								<td th:text="${orderDetail.total}"></td>
+								<td class="orderDetail-price" th:text="${orderDetail.total}"></td>
 							
 							<td><a
 								th:href="@{/orders/sell-gold-order/{orderID}(orderID=${purchaseOrderGoldDto.order.orderID},detailID=${orderDetail.detailID})}">

@@ -26,7 +26,12 @@
             justify-content: flex-start;
             margin-top     : 20px;
         }
-
+.total-container-product {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+    gap: 10px;
+}
         .sidebar .sidebar-title .sidebar-profile {
             display      : flex;
             font-size    : 16px;
@@ -42,7 +47,7 @@
     margin-bottom: 12px;
     text-align: center;
     color: #000000;
-    font-size: 17px;
+    font-size: 18px;
     padding: 10px;
 }
 
