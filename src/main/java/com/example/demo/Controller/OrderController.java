@@ -11,14 +11,12 @@ import com.example.demo.Service.ProductService;
 import com.example.demo.dto.OrderDTO;
 import com.example.demo.dto.ProductOrderDTO;
 import com.example.demo.dto.PurchaseOrderGoldDto;
-
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -226,7 +224,27 @@ public class OrderController {
          model.addAttribute("staff", staff);
 		return "manager/counterDetail";
 	}
-
+	  @GetMapping("/dashboard")
+	    public String showDashboard(Model model) {
+		       String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		        Staff staff = staffRepository.findByEmail(email);
+		        model.addAttribute("staff", staff);
+		        Double totalSum = orderRepository.getTotalSum();
+		        Double totalSumWithS = orderRepository.getTotalSumWithOrderCodeStartingWithS();
+		        Double totalSumWithP = orderRepository.getTotalSumWithOrderCodeStartingWithP();
+		        List<Date> datesWithS = orderRepository.getDistinctDatesWithOrderCodeStartingWithS();
+		        List<Date> datesWithP = orderRepository.getDistinctDatesWithOrderCodeStartingWithP();
+		        List<Object[]> totalSumByDateS = orderRepository.getTotalSumByDateForOrderCodeStartingWithS();
+		        List<Object[]> totalSumByDateP = orderRepository.getTotalSumByDateForOrderCodeStartingWithP();
+		        model.addAttribute("totalSumByDateS", totalSumByDateS);
+		        model.addAttribute("totalSumByDateP", totalSumByDateP);
+		        model.addAttribute("datesWithS", datesWithS);
+		        model.addAttribute("datesWithP", datesWithP);
+		        model.addAttribute("totalSum", totalSum);
+		        model.addAttribute("totalSumWithS", totalSumWithS);
+		        model.addAttribute("totalSumWithP", totalSumWithP);
+		        return "manager/dashboard";
+	    }
 	@GetMapping("/seller/products/bill-of-sell/{orderID}")
 	public String showBillOfSellById(@PathVariable Integer orderID, Model model) {
 		Order order = orderService.findOrderById(orderID).orElseThrow(() -> new RuntimeException("Order not found"));
