@@ -3,11 +3,13 @@ package com.example.demo.Controller;
 import com.example.demo.Entity.Order;
 import com.example.demo.Entity.OrderDetail;
 import com.example.demo.Entity.Product;
+import com.example.demo.Entity.Promotion;
 import com.example.demo.Entity.Staff;
 import com.example.demo.Repository.OrderRepository;
 import com.example.demo.Repository.StaffRepository;
 import com.example.demo.Service.OrderService;
 import com.example.demo.Service.ProductService;
+import com.example.demo.Service.PromotionService;
 import com.example.demo.dto.OrderDTO;
 import com.example.demo.dto.ProductOrderDTO;
 import com.example.demo.dto.PurchaseOrderGoldDto;
@@ -40,7 +42,7 @@ public class OrderController {
     private StaffRepository staffRepository;
 	 @Autowired
 	  private OrderRepository orderRepository;
-
+	 private PromotionService promotionService;
    private OrderService orderService;
 	private ProductService productService;
 	private OrderDTO orderDTOs;
@@ -50,10 +52,10 @@ public class OrderController {
 	private List<OrderDetail> purchaseDetails;
 	private List<Product> lProduct;
 	private int oldId=0;
-	public OrderController(OrderService orderService, ProductService productService) {
+	public OrderController(OrderService orderService, ProductService productService,PromotionService promotionService) {
 		this.orderService = orderService;
 		this.productService = productService;
-
+		 this.promotionService = promotionService;
 	}
 
 	@GetMapping("/orders")
@@ -168,7 +170,6 @@ public class OrderController {
 	       Staff staff = staffRepository.findByEmail(email);
 	       model.addAttribute("staff", staff);
 		model.addAttribute("order", order);
-		
 		return "seller/sellOrderDetail";
 	}
 	
@@ -208,22 +209,6 @@ public class OrderController {
          model.addAttribute("staff", staff);
 		return "seller/purchaseOrderDetail";
 	}
-
-	@GetMapping("/counter")
-	public String counterList(Model model) {
-		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
-         Staff staff = staffRepository.findByEmail(email);
-         model.addAttribute("staff", staff);
-		return "manager/counterList";
-	}
-
-	@GetMapping("/counter/counterDetail")
-	public String counterDetail(Model model) {
-		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
-         Staff staff = staffRepository.findByEmail(email);
-         model.addAttribute("staff", staff);
-		return "manager/counterDetail";
-	}
 	  @GetMapping("/dashboard")
 	    public String showDashboard(Model model) {
 		       String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -253,7 +238,9 @@ public class OrderController {
 	public String showBillOfSellById(@PathVariable Integer orderID, Model model) {
 		Order order = orderService.findOrderById(orderID).orElseThrow(() -> new RuntimeException("Order not found"));
 		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
-	       Staff staff = staffRepository.findByEmail(email);
+	       Staff staff = staffRepository.findByEmail(email);     
+	       List<Promotion> promotions = promotionService.findAll();
+	        model.addAttribute("promotions", promotions);
 	       model.addAttribute("staff", staff);
 		model.addAttribute("order", order);
 		return "cashier/BillofSell";
@@ -289,6 +276,8 @@ public class OrderController {
 		Order order = orderService.findOrderById(orderID).orElseThrow(() -> new RuntimeException("Order not found"));
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 	       Staff staff = staffRepository.findByEmail(email);
+	       List<Promotion> promotions = promotionService.findAll();
+	        model.addAttribute("promotions", promotions);
 	       model.addAttribute("staff", staff);
 		model.addAttribute("order", order);
 		

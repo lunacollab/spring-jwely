@@ -1,16 +1,20 @@
 package com.example.demo.Controller;
 
 
+import com.example.demo.Entity.Counter;
 import com.example.demo.Entity.Product;
 import com.example.demo.Entity.Promotion;
 import com.example.demo.Entity.Staff;
 import com.example.demo.Repository.StaffRepository;
 import com.example.demo.Service.CategoryService;
+import com.example.demo.Service.CounterService;
 import com.example.demo.Service.GemPriceListService;
 import com.example.demo.Service.MaterialPriceListService;
 import com.example.demo.Service.ProductService;
 import com.example.demo.Service.PromotionService;
 import com.example.demo.Service.TypeService;
+
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,23 +32,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ProductController {
 
-    private final ProductService productService;
-    private final CategoryService categoryService;
-    private final GemPriceListService gemPriceListService;
-    private final MaterialPriceListService materialPriceListService;
-    private final TypeService typeService;
-    private final PromotionService promotionService;
+    private ProductService productService;
+    private  CategoryService categoryService;
+    private GemPriceListService gemPriceListService;
+    private  MaterialPriceListService materialPriceListService;
+    private  TypeService typeService;
+    private PromotionService promotionService;
+    private CounterService counterService;
     @Autowired
     private StaffRepository staffRepository;
 
     public ProductController(ProductService productService, CategoryService categoryService,GemPriceListService gemPriceListService,
-    		MaterialPriceListService materialPriceListService,TypeService typeService,PromotionService promotionService ) {
+    		MaterialPriceListService materialPriceListService,TypeService typeService,PromotionService promotionService,
+    		CounterService counterService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.gemPriceListService = gemPriceListService;
         this.materialPriceListService = materialPriceListService;
         this.typeService = typeService;
         this.promotionService = promotionService;
+        this.counterService=counterService;
     }
     @GetMapping("seller/products")
     public String showProductSeller(Model model, @RequestParam(defaultValue = "0") int page) {
@@ -123,6 +131,7 @@ public class ProductController {
          model.addAttribute("materialPriceLists", materialPriceListService.getAllMaterialPriceLists());
          model.addAttribute("types", typeService.getAllTypes());
          model.addAttribute("products", productService.findAllProduct());
+         model.addAttribute("counters", counterService.findAll());
          String email = SecurityContextHolder.getContext().getAuthentication().getName();
 	       Staff staff = staffRepository.findByEmail(email);
 	       model.addAttribute("staff", staff);
@@ -138,7 +147,7 @@ public class ProductController {
 	       model.addAttribute("staff", staff);
         return "manager/createNewProduct";
     }
-  
+
     @GetMapping("/promotion")
     public String showPromotionList(Model model, @RequestParam(defaultValue = "0") int page) {
         Page<Promotion> promotionPage = promotionService.findAll(PageRequest.of(page, 10));
@@ -164,5 +173,51 @@ public class ProductController {
     public String showPriceList() {
         return "manager/priceList";
     }
-    
+    @GetMapping("/counter")
+	public String counterList(Model model,@RequestParam(defaultValue = "0") int page, 
+            @RequestParam(defaultValue = "10") int size) {
+		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
+         Staff staff = staffRepository.findByEmail(email);
+         PageRequest pageable = PageRequest.of(page, size);
+         Page<Counter> counterPage = counterService.findPaginated(pageable);
+         model.addAttribute("currentPage", counterPage.getNumber());
+         model.addAttribute("totalPages", counterPage.getTotalPages()); 
+         model.addAttribute("counterPage", counterPage);
+         model.addAttribute("counter", new Counter());
+         model.addAttribute("staff", staff);
+		return "manager/counterList";
+	}
+    @PostMapping("/saveCounter")
+    public String saveCounter(@ModelAttribute Counter counter) {
+    	counter.setActive(true);
+        counterService.saveCounter(counter);
+        return "redirect:/counter";
+    }
+    @GetMapping("counter/editCounter/{counterID}")
+    public String editCounter(@PathVariable("counterID") Integer counterID, Model model) {
+    	Optional<Counter> counter = counterService.getCounterById(counterID);
+    	String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Staff staff = staffRepository.findByEmail(email);
+        model.addAttribute("staff", staff);
+        model.addAttribute("counter", counter);
+ 	   return "manager/counterList";
+    }
+    @PostMapping("counter/editCounter/{counterID}/update")
+    public String updateCounter(@ModelAttribute("counter") Counter counter,@PathVariable("counterID") Integer counterID,Model model) {
+    	String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Staff staff = staffRepository.findByEmail(email);
+        model.addAttribute("staff", staff);
+    	counterService.updateCounter(counter);
+    	return "redirect:/counter";
+    }
+
+	@GetMapping("/counter/counterDetail/{counterID}")
+	public String counterDetail(@PathVariable("counterID") Integer counterID, Model model) {
+		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
+         Staff staff = staffRepository.findByEmail(email);
+         Optional<Counter> counter = counterService.getCounterById(counterID);
+         model.addAttribute("staff", staff);
+         model.addAttribute("counter", counter.get());
+         return "manager/counterDetail";
+	}
 }

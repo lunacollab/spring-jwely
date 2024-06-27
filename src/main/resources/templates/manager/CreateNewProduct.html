@@ -74,6 +74,14 @@
                 <option value="2" th:selected="${product.typeID} == 2">Gold</option>
             </select>
         </div>
+        <div class="form-group">
+            <label for="counter">Counter</label>
+            <select class="form-control" id="counter" th:field="*{counterID}">
+               <option th:each="counter : ${counters}"
+                        th:value="${counter.counterID}"
+                        th:text="${counter.counterName}"></option>
+            </select>
+        </div>
         <div id="jewelry-fields" style="display: none;">
             <div class="form-group">
                 <label for="origin">Origin</label>

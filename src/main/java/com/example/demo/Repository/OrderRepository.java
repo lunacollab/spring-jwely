@@ -37,10 +37,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Query("SELECT DISTINCT o.date FROM Order o WHERE o.orderCode LIKE 'P%'")
     List<Date> getDistinctDatesWithOrderCodeStartingWithP();
     
-    @Query("SELECT o.date, SUM(o.total) FROM Order o WHERE o.orderCode LIKE 'S%' GROUP BY o.date")
+    @Query("SELECT SUM(o.total) FROM Order o WHERE o.orderCode LIKE 'S%' GROUP BY o.date")
     List<Object[]> getTotalSumByDateForOrderCodeStartingWithS();
     
-    @Query("SELECT o.date, SUM(o.total) FROM Order o WHERE o.orderCode LIKE 'P%' GROUP BY o.date")
+    @Query("SELECT SUM(o.total) FROM Order o WHERE o.orderCode LIKE 'P%' GROUP BY o.date")
     List<Object[]> getTotalSumByDateForOrderCodeStartingWithP();
   
 }

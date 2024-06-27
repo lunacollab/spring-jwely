@@ -52,7 +52,15 @@ public class Product {
     @Column(name = "materialPriceListID")
     private int materialPriceListID;
     
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "counterID", referencedColumnName = "counterID", insertable = false, updatable = false)
+    private Counter counter;
+
+    @Column(name = "counterID")
+    private int counterID;
+    
     @OneToMany(mappedBy = "productID", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderDetail> orderDetails;
-
+   
+    
 }
