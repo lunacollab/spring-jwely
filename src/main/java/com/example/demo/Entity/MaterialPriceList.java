@@ -31,8 +31,7 @@ public class MaterialPriceList {
 
     private Date applyDate;
 
-    @OneToMany(mappedBy = "materialPriceList")
+    @OneToMany(mappedBy = "materialPriceList", fetch = FetchType.LAZY) 
     private List<Product> products;
     
-   
     }

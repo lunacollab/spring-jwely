@@ -36,15 +36,16 @@ public class StaffServiceImpl implements StaffService {
 	   
 	  @Override
 	  @Transactional
-	    public Staff save(Staff staff) {
-		   if (staffRepository.existsByEmail(staff.getEmail())) {
-	            throw new IllegalArgumentException("Email '" + staff.getEmail() + "' is already in use.");
-	        }else {
-		        staff.setPassword(bCryptPasswordEncoder.encode(staff.getPassword()));
-		        staff.setActive(true);
-		        return staffRepository.save(staff);
-	        }
-	    }
+	  public Staff save(Staff staff) {
+	      if (staffRepository.existsByEmail(staff.getEmail())) {
+	          throw new IllegalArgumentException("Email '" + staff.getEmail() + "' is already in use.");
+	      } else {
+	          staff.setPassword(bCryptPasswordEncoder.encode(staff.getPassword()));
+	          staff.setActive(true);
+	          return staffRepository.save(staff);
+	      }
+	  }
+
 	  
 	  @Override
 	  public List<Staff> getAllStaff(){

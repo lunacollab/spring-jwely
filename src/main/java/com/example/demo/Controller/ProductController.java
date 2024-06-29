@@ -3,6 +3,7 @@ package com.example.demo.Controller;
 
 import com.example.demo.Entity.Counter;
 import com.example.demo.Entity.GemPriceList;
+import com.example.demo.Entity.Material;
 import com.example.demo.Entity.Product;
 import com.example.demo.Entity.Promotion;
 import com.example.demo.Entity.Staff;
@@ -11,6 +12,7 @@ import com.example.demo.Service.CategoryService;
 import com.example.demo.Service.CounterService;
 import com.example.demo.Service.GemPriceListService;
 import com.example.demo.Service.MaterialPriceListService;
+import com.example.demo.Service.MaterialService;
 import com.example.demo.Service.ProductService;
 import com.example.demo.Service.PromotionService;
 import com.example.demo.Service.TypeService;
@@ -47,13 +49,14 @@ public class ProductController {
     private  TypeService typeService;
     private PromotionService promotionService;
     private CounterService counterService;
+    private MaterialService materialService;
     @Autowired
     private StaffRepository staffRepository;
     private static final Logger logger = LogManager.getLogger(ProductController.class);
 
     public ProductController(ProductService productService, CategoryService categoryService,GemPriceListService gemPriceListService,
     		MaterialPriceListService materialPriceListService,TypeService typeService,PromotionService promotionService,
-    		CounterService counterService) {
+    		CounterService counterService,MaterialService materialService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.gemPriceListService = gemPriceListService;
@@ -61,6 +64,7 @@ public class ProductController {
         this.typeService = typeService;
         this.promotionService = promotionService;
         this.counterService=counterService;
+        this.materialService=materialService;
     }
     @GetMapping("seller/products")
     public String showProductSeller(Model model, @RequestParam(defaultValue = "0") int page) {
@@ -298,4 +302,17 @@ public class ProductController {
          model.addAttribute("counter", counter.get());
          return "manager/counterDetail";
 	}
+	  @GetMapping("/manage-material")
+	    public String showManageMaterial(Model model, @RequestParam(defaultValue = "0") int page, 
+	                                @RequestParam(defaultValue = "10") int size) {
+	        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	        Staff staff = staffRepository.findByEmail(email);
+	        PageRequest pageable = PageRequest.of(page, size );
+	        Page<Material> MaterialManagePage = materialService.findAllMaterialList(pageable);
+	        model.addAttribute("currentPage", MaterialManagePage.getNumber());
+	        model.addAttribute("totalPages", MaterialManagePage.getTotalPages()); 
+	        model.addAttribute("materialPage", MaterialManagePage);
+	        model.addAttribute("staff", staff);
+	        return "manager/manageMaterial";
+	    }
 }

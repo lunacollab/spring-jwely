@@ -1,9 +1,12 @@
 package com.example.demo.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Entity.Material;
+import com.example.demo.Entity.MaterialPriceList;
 import com.example.demo.Repository.MaterialRepository;
 import com.example.demo.Service.MaterialService;
 
@@ -44,4 +47,9 @@ public class MaterialServiceImpl implements MaterialService {
     public void deleteMaterial(int id) {
         materialRepository.deleteById(id);
     }
+    @Override
+    public Page<Material> findAllMaterialList(Pageable pageable) {
+        return materialRepository.findAll(pageable);
+    }
+
 }

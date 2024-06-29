@@ -11,4 +11,5 @@ public interface MaterialPriceListService {
    List<MaterialPriceList>  getMaterialPriceListById(int id);
    Page<MaterialPriceList> findAllMaterial(Pageable pageable);
    MaterialPriceList save(MaterialPriceList materialPriceList);
+   
 }

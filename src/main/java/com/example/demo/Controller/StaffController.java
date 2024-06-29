@@ -55,14 +55,23 @@ public class StaffController {
 	        return "manager/createNewStaff";
 	    }
 	  
-	    @PostMapping("/staff/create-new-staff/save")
-	    public String saveNewStaff(@ModelAttribute Staff staff,Model model) {
-	    	 String email = SecurityContextHolder.getContext().getAuthentication().getName();
-	         Staff staffs = staffRepository.findByEmail(email);
-	         model.addAttribute("staffs", staffs);
-	        staffService.save(staff);
-	        return "redirect:/staff";
-	    }
+	  @PostMapping("/staff/create-new-staff/save")
+	  public String saveNewStaff(@ModelAttribute Staff staff, Model model) {
+	      String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	      Staff staffs = staffRepository.findByEmail(email);
+	      model.addAttribute("staffs", staffs);
+
+	      try {
+	          staffService.save(staff);
+	      } catch (IllegalArgumentException e) {
+	          model.addAttribute("error", e.getMessage());
+	          model.addAttribute("staff", staff); 
+	          return "manager/createNewStaff";
+	      }
+
+	      return "redirect:/staff";
+	  }
+
 	  
 	   @GetMapping("staff/edit-staff-profile/{staffID}")
 	   public String EditStaffProfile(@PathVariable Integer staffID, Model model) {
