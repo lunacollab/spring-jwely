@@ -22,7 +22,7 @@ public class Counter {
     @Column(name="active")
     private boolean active;
     
-    @OneToMany(mappedBy = "productID", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "productID", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Product> product;
 
 }

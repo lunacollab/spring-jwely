@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Entity.Material;
@@ -23,5 +25,14 @@ public class MaterialPriceListServiceImpl implements MaterialPriceListService{
 	 @Override
 	    public List<MaterialPriceList> getMaterialPriceListById(int id) {
 	        return materialPriceListRepository.findByMaterialID(id);
+	    }
+	 @Override
+	    public Page<MaterialPriceList> findAllMaterial(Pageable pageable) {
+	        return materialPriceListRepository.findAll(pageable);
+	    }
+
+	    @Override
+	    public MaterialPriceList save(MaterialPriceList materialPriceList) {
+	        return materialPriceListRepository.save(materialPriceList);
 	    }
 }

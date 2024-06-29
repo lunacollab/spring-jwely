@@ -2,6 +2,7 @@ package com.example.demo.Controller;
 
 
 import com.example.demo.Entity.Counter;
+import com.example.demo.Entity.GemPriceList;
 import com.example.demo.Entity.Product;
 import com.example.demo.Entity.Promotion;
 import com.example.demo.Entity.Staff;
@@ -13,9 +14,16 @@ import com.example.demo.Service.MaterialPriceListService;
 import com.example.demo.Service.ProductService;
 import com.example.demo.Service.PromotionService;
 import com.example.demo.Service.TypeService;
-
+import com.example.demo.saveLog.csvlog;
+import com.example.demo.Entity.MaterialPriceList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,6 +49,7 @@ public class ProductController {
     private CounterService counterService;
     @Autowired
     private StaffRepository staffRepository;
+    private static final Logger logger = LogManager.getLogger(ProductController.class);
 
     public ProductController(ProductService productService, CategoryService categoryService,GemPriceListService gemPriceListService,
     		MaterialPriceListService materialPriceListService,TypeService typeService,PromotionService promotionService,
@@ -165,15 +174,83 @@ public class ProductController {
  	public String savePromotionList(Model model,Promotion promotion) {
     	 String email = SecurityContextHolder.getContext().getAuthentication().getName();
 	       Staff staff = staffRepository.findByEmail(email);
+
 	       model.addAttribute("staff", staff);
     	 promotionService.save(promotion); 
     	 return "redirect:/promotion";
      }
     @GetMapping("/price-list")
-    public String showPriceList() {
+    public String showPriceList(Model model, @RequestParam(defaultValue = "0") int page, 
+                                @RequestParam(defaultValue = "10") int size) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Staff staff = staffRepository.findByEmail(email);
+        PageRequest pageable = PageRequest.of(page, size,Sort.by(Sort.Direction.DESC, "applyDate"));
+        Page<MaterialPriceList> materialPriceListPage = materialPriceListService.findAllMaterial(pageable);
+        model.addAttribute("currentPage", materialPriceListPage.getNumber());
+        model.addAttribute("totalPages", materialPriceListPage.getTotalPages()); 
+        model.addAttribute("materialPriceListPage", materialPriceListPage);
+        model.addAttribute("materialPrice", new MaterialPriceList()); 
+        model.addAttribute("staff", staff);
         return "manager/priceList";
     }
-    @GetMapping("/counter")
+
+    private String getMaterialName(int materialID) {
+        switch (materialID) {
+            case 1:
+                return "18k gold";
+            case 2:
+                return "24k gold";
+            case 3:
+                return "9999k gold";
+            default:
+                return "Unknown material";
+        }
+    }
+    @PostMapping("/price-list")
+    public String savePriceList(Model model, MaterialPriceList materialPriceList) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Staff staff = staffRepository.findByEmail(email);
+
+        materialPriceList.setApplyDate(new Date());
+        model.addAttribute("staff", staff);
+        materialPriceListService.save(materialPriceList);
+
+        String materialName = getMaterialName(materialPriceList.getMaterialID());
+        String logEntry = String.format("%s, Saved material price list: ApplyDate: %s, Name: %s, BuyPrice: %.2f, SellPrice: %.2f",
+                                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()),
+                                        materialPriceList.getApplyDate(), 
+                                        materialName, 
+                                        materialPriceList.getBuyPrice(), 
+                                        materialPriceList.getSellPrice());
+        csvlog.log(logEntry);
+
+        return "redirect:/price-list";
+    } 
+    
+    @GetMapping("/gem-price-list")
+    public String showGemPriceList(Model model, @RequestParam(defaultValue = "0") int page, 
+                                @RequestParam(defaultValue = "10") int size) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Staff staff = staffRepository.findByEmail(email);
+        PageRequest pageable = PageRequest.of(page, size,Sort.by(Sort.Direction.DESC, "applyDate"));
+        Page<GemPriceList> gemPriceListPage = gemPriceListService.findAllGemPriceList(pageable);
+        model.addAttribute("currentPage", gemPriceListPage.getNumber());
+        model.addAttribute("totalPages", gemPriceListPage.getTotalPages()); 
+        model.addAttribute("gemPriceListPage", gemPriceListPage);
+        model.addAttribute("gemPriceList", new GemPriceList()); 
+        model.addAttribute("staff", staff);
+        return "manager/gemPriceList";
+    }
+    @PostMapping("/gem-price-list")
+    public String saveGemPriceList(Model model, GemPriceList gemPriceList) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Staff staff = staffRepository.findByEmail(email);
+        gemPriceList.setApplyDate(new Date());
+        model.addAttribute("staff", staff);
+        gemPriceListService.save(gemPriceList);
+        return "redirect:/gem-price-list";
+    } 
+	@GetMapping("/counter")
 	public String counterList(Model model,@RequestParam(defaultValue = "0") int page, 
             @RequestParam(defaultValue = "10") int size) {
 		 String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -198,17 +275,18 @@ public class ProductController {
     	Optional<Counter> counter = counterService.getCounterById(counterID);
     	String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Staff staff = staffRepository.findByEmail(email);
+    
         model.addAttribute("staff", staff);
-        model.addAttribute("counter", counter);
- 	   return "manager/counterList";
+        model.addAttribute("counter", counter.get());
+ 	   return "manager/editCounter";
     }
     @PostMapping("counter/editCounter/{counterID}/update")
-    public String updateCounter(@ModelAttribute("counter") Counter counter,@PathVariable("counterID") Integer counterID,Model model) {
-    	String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    public String updateCounter(@ModelAttribute("counter") Counter counter, @PathVariable("counterID") Integer counterID, Model model) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Staff staff = staffRepository.findByEmail(email);
         model.addAttribute("staff", staff);
-    	counterService.updateCounter(counter);
-    	return "redirect:/counter";
+        counterService.updateCounter(counter);
+        return "redirect:/counter";
     }
 
 	@GetMapping("/counter/counterDetail/{counterID}")

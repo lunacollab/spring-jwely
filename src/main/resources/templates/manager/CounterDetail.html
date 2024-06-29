@@ -29,9 +29,11 @@
               <a  class="link-product" th:href="@{/manager/products}"><p>Manage Product</p></a>
              <a class="link-product" th:href="@{/staff}"><p>Manage Staff</p></a>
              <a  class="link-product" th:href="@{/promotion}"><p>Promotion</p></a>
-             <a  class="link-product" th:href="@{/manager-profile}"><p>Personal Profile</p></a>
+             <a  class="link-product" th:href="@{/manager-profile}"><p>Personal Profile</p></a>       
             <p class="active">Manage Counter</p>
             <p>Manage Material</p>
+             <a  class="link-product" th:href="@{/price-list}"><p>Material PriceList</p></a>
+              <a class="link-product" th:href="@{/gem-price-list}"><p>Gem Price List</p></a>
         </div>
          <form th:action="@{/perform_logout}" method="post">
             <button type="submit"> 
@@ -42,7 +44,11 @@
     <div class="content">
         <div class="bill-header">
             <h1>Counter Detail</h1>
+               <div class="create-counter-list">
+                   <a th:href="@{/counter}"> <button >Back</button></a>
+                </div>
         </div>
+     
         <div class="bill-details">
             <div class="staff">
                 <input value="Search" class="staff-input" />

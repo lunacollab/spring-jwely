@@ -89,12 +89,12 @@
             </div>
             <div class="bill-details">
                 <div class="staff">
-                    <input id="product-search" placeholder="Search" class="staff-input" onfocus="showDropdown()" />
+                    <input id="product-search" placeholder="Search" class="staff-input" onfocus="showDropdown()" onkeyup="filterProducts()"  />
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <div id="dropdown" class="dropdown-content">
                         <ol>
                             <li th:each="product: ${products}" th:if="${product.isActive == true}">
-                                <div th:data-order="${product}" th:text="${product.productName}"
+                                <div th:data-order="${product}" th:text="${product.productName + ' (' + product.type.typeName + ')'}"
                                     th:attr="data-product-id=${product.productID}"
                                     onclick="selectProduct(this.textContent, this.getAttribute('data-product-id'))"></div>
                             </li>
@@ -102,7 +102,7 @@
                     </div>
                 </div>
                 <div class="detail-add">
-                    <button type="button"  class="btn-add" onclick="addProduct()">Add</button>
+                    <button type="button" class="btn-add" onclick="addProduct()" onkeyup="filterProducts()">Add</button>
                 </div>
             </div>
             <div class="bill-table">
@@ -115,6 +115,9 @@
                             <th>Material</th>
                             <th>Weight</th>
                              <th>Carat</th>
+                             <th>Clarity</th>
+                             <th>Cut</th>
+                             <th>Color</th>
                             <th>Price</th>
                             <th>Action</th>
                         </tr>
@@ -126,11 +129,14 @@
                             <td th:text="${Product.productName}"></td>
                            <td th:text="${Product.materialPriceList.material.name}"></td>
                             <td th:text="${Product.weight}"></td>
-                             <td th:text="${Product.gemPriceList.gem.carat}"></td>
+                           <td th:text="${Product.type.typeName == 'Gold' ? '' : Product.gemPriceList.gem.carat}"></td>
+                          <td th:text="${Product.type.typeName == 'Gold' ? '' : Product.gemPriceList.gem.clarity}"></td>
+                           <td th:text="${Product.type.typeName == 'Gold' ? '' : Product.gemPriceList.gem.cut}"></td>
+                         <td th:text="${Product.type.typeName == 'Gold' ? '' : Product.gemPriceList.gem.color}"></td>
                            <td th:text="${Product.MaterialPriceList.sellPrice * Product.weight + Product.gemPriceList.sellPrice}"></td>
                            <td><a
 								th:href="@{/orders/new-sell-order(removeId=${Product.productID})}">
-									<i class="fa-solid fa-trash-can">
+									<i class="fa-solid fa-trash-can"></i>
 							</a></td>
                              
                         </tr>

@@ -42,5 +42,11 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     
     @Query("SELECT SUM(o.total) FROM Order o WHERE o.orderCode LIKE 'P%' GROUP BY o.date")
     List<Object[]> getTotalSumByDateForOrderCodeStartingWithP();
+    
+    @Query("SELECT o.staffID, s.fullName, SUM(o.total) AS totalSum " +
+            "FROM Order o JOIN o.staff s " +
+            "GROUP BY o.staffID, s.fullName " +
+            "ORDER BY totalSum DESC")
+     List<Object[]> findTop5OrdersByTotal();
   
 }

@@ -32,6 +32,8 @@
              <a  class="link-product" th:href="@{/manager-profile}"><p>Personal Profile</p></a>
            <a  class="link-product" th:href="@{/counter}"><p>Manage Counter</p></a>
             <p>Manage Material</p>
+            <a  class="link-product" th:href="@{/price-list}"><p> Material Price List</p></a>
+                <a class="link-product" th:href="@{/gem-price-list}"><p>Gem Price List</p></a>
         </div>
           <form th:action="@{/perform_logout}" method="post">
             <button type="submit"> 
@@ -65,6 +67,7 @@
                     <tr>
                         <th>Product Name</th>
                         <th>Product Code</th>
+                        <th>Counter Name</th>
                          <th>Status</th>
                         <th>Detail</th>
                         <th>Action</th>
@@ -74,6 +77,7 @@
                     <tr th:each="product : ${products}">
                         <td th:text="${product.productName}"></td>
                         <td th:text="${product.productCode}"></td>
+                        <td th:text="${product.counter.counterName}"></td>
                          <td>
                             <button th:classappend="${product.isActive} ? 'status complete' : 'status pending'">
                                 <span class="sf"><i class="fa-solid fa-circle"></i></span>

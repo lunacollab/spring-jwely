@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.Entity.Staff;
+import com.example.demo.Repository.OrderRepository;
 import com.example.demo.Repository.StaffRepository;
 import com.example.demo.Service.StaffService;
 
@@ -23,6 +24,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class StaffController {
 	@Autowired
     private StaffRepository staffRepository;
+	@Autowired
+    private OrderRepository orderRepository;
+	
 	  private final StaffService staffService;
 	  public StaffController(StaffService staffService) {
 	         this.staffService = staffService;
@@ -35,7 +39,9 @@ public class StaffController {
 	        model.addAttribute("currentPage", staffPage.getNumber());
 	        model.addAttribute("totalPages", staffPage.getTotalPages());
 	        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		       Staff staff = staffRepository.findByEmail(email);
+		    Staff staff = staffRepository.findByEmail(email);
+		    List<Object[]> topStaff = orderRepository.findTop5OrdersByTotal();
+		    model.addAttribute("topStaff", topStaff);
 		       model.addAttribute("staff", staff);
 	        return "manager/staffList";
 	    }
@@ -55,7 +61,7 @@ public class StaffController {
 	         Staff staffs = staffRepository.findByEmail(email);
 	         model.addAttribute("staffs", staffs);
 	        staffService.save(staff);
-	        return "manager/createNewStaff";
+	        return "redirect:/staff";
 	    }
 	  
 	   @GetMapping("staff/edit-staff-profile/{staffID}")
@@ -68,12 +74,20 @@ public class StaffController {
 		   return"manager/editStaffProfile";
 	   }
 	   @PostMapping("/staff/edit-staff-profile/{staffID}/save")
-	   public String updateStaffProfile(@PathVariable Integer staffID, @ModelAttribute Staff staff, Model model) throws Exception {
-		   String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	   public String updateStaffProfile(@PathVariable Integer staffID, @ModelAttribute Staff staff, Model model) {
+	       String email = SecurityContextHolder.getContext().getAuthentication().getName();
 	       Staff staffs = staffRepository.findByEmail(email);
 	       model.addAttribute("staffs", staffs);
-		    staffService.update(staff);
-		    return"manager/editStaffProfile";
+
+	       try {
+	           staffService.update(staff);
+	       } catch (Exception e) {
+	           model.addAttribute("error", e.getMessage());
+	           model.addAttribute("staff", staff); // Ensure the staff object is added to the model
+	           return "manager/editStaffProfile";
+	       }
+
+	       return "redirect:/staff";
 	   }
 
 

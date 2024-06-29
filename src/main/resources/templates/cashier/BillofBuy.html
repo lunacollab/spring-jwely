@@ -48,7 +48,7 @@
             </button>
         </form>
     </div>
-    <div class="content">
+    <div class="content" id="content">
         <div class="address">
             <p>FPT Jewelry Store</p>
             <p>Tel: 0909002229</p>
@@ -222,7 +222,6 @@
             updateTotalAmount();
         }
 
-        // Function to update total amount based on calculations
         function updateTotalAmount() {
         	  let provisionalTotal = calculateProvisionalTotal();
         	    let discount = provisionalTotal * 0.10;
@@ -261,20 +260,31 @@
         });
 
         document.querySelector('.print-button').addEventListener('click', function () {
-            formData.append('totalAmount', document.getElementById('total-amount').textContent);
-            fetch(`/seller/products/bill-of-buy/${orderID}/print`, {
-                method: 'POST',
-                body: formData
-            }).then(response => {
-                if (response.ok) {
-                    console.log('Order updated successfully');
-                    window.location.href = '/orders';
-                } else {
-                    alert('Failed to update order');
-                }
-            }).catch(error => {
-                console.error('Error:', error);
-            });
+        	  html2canvas(document.getElementById('content')).then(function (canvas) {    
+      	        const imgData = canvas.toDataURL('image/png');
+      	        const { jsPDF } = window.jspdf;
+      	        const pdf = new jsPDF('p', 'pt', 'a4');
+      	        const imgProps = pdf.getImageProperties(imgData);
+      	        const pdfWidth = pdf.internal.pageSize.getWidth();
+      	        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      	        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      	        pdf.save('bill_of_buy.pdf');
+                formData.append('totalAmount', document.getElementById('total-amount').textContent);
+                fetch(`/seller/products/bill-of-buy/${orderID}/print`, {
+                    method: 'POST',
+                    body: formData
+                }).then(response => {
+                    if (response.ok) {
+                        console.log('Order updated successfully');
+                        window.location.href = '/orders';
+                    } else {
+                        alert('Failed to update order');
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+
+      	    });
         });
 
         document.querySelector('.cancel-button').addEventListener('click', function () {
@@ -293,9 +303,13 @@
                 console.error('Error:', error);
             });
         });
+        
+       
+       
     });
 </script>
-     
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 package com.example.demo.Controller;
 
+import com.example.demo.Entity.Counter;
 import com.example.demo.Entity.Order;
 import com.example.demo.Entity.OrderDetail;
 import com.example.demo.Entity.Product;
@@ -51,6 +52,7 @@ public class OrderController {
 	private List<OrderDetail> orDetails;
 	private List<OrderDetail> purchaseDetails;
 	private List<Product> lProduct;
+	private List<Counter> ICounter;
 	private int oldId=0;
 	public OrderController(OrderService orderService, ProductService productService,PromotionService promotionService) {
 		this.orderService = orderService;
@@ -219,19 +221,17 @@ public class OrderController {
 		        Double totalSumWithP = orderRepository.getTotalSumWithOrderCodeStartingWithP();
 		        List<Date> datesWithS = orderRepository.getDistinctDatesWithOrderCodeStartingWithS();
 		        List<Date> datesWithP = orderRepository.getDistinctDatesWithOrderCodeStartingWithP();
-		        List<Date> limitedDatesWithS = datesWithS.subList(0, Math.min(datesWithS.size(), 8));
-		        List<Date> limitedDatesWithP = datesWithP.subList(0, Math.min(datesWithP.size(), 8));
 		        List<Object[]> totalSumByDateS = orderRepository.getTotalSumByDateForOrderCodeStartingWithS();
 		        List<Object[]> totalSumByDateP = orderRepository.getTotalSumByDateForOrderCodeStartingWithP();
-		        List<Object[]> limitedTotalSumByDateS = totalSumByDateS.subList(0, Math.min(totalSumByDateS.size(), 8));
-		        List<Object[]> limitedTotalSumByDateP = totalSumByDateP.subList(0, Math.min(totalSumByDateP.size(), 8));
-		        model.addAttribute("totalSumByDateS", limitedTotalSumByDateS);
-		        model.addAttribute("totalSumByDateP", limitedTotalSumByDateP);
-		        model.addAttribute("datesWithS", limitedDatesWithS);
-				model.addAttribute("datesWithP", limitedDatesWithP);
+		       
+		        model.addAttribute("totalSumByDateS", totalSumByDateS);
+		        model.addAttribute("totalSumByDateP", totalSumByDateP);
+		        model.addAttribute("datesWithS", datesWithS);
+				model.addAttribute("datesWithP", datesWithP);
 		        model.addAttribute("totalSum", totalSum);
 		        model.addAttribute("totalSumWithS", totalSumWithS);
 		        model.addAttribute("totalSumWithP", totalSumWithP);
+
 		        return "manager/dashboard";
 	    }
 	@GetMapping("/seller/products/bill-of-sell/{orderID}")
@@ -309,6 +309,12 @@ public class OrderController {
          model.addAttribute("staff", staff);
 		return "cashier/BillofBuy";
 	}
+	   @GetMapping("/warranty")
+	   public String Warranty() {
+		   return "cashier/warranty";
+	   }
+	   
+	  
 
 	
 }

@@ -32,6 +32,8 @@
             <a class="link-product" th:href="@{/manager-profile}"><p>Personal Profile</p></a>
             <p class="active">Manage Counter</p>
             <p>Manage Material</p>
+            <a  class="link-product" th:href="@{/price-list}"><p> Material Price List</p></a>
+             <a class="link-product" th:href="@{/gem-price-list}"><p>Gem Price List</p></a>
         </div>
         <form th:action="@{/perform_logout}" method="post">
             <button type="submit">
@@ -63,6 +65,7 @@
                             <th>Counter Name</th>
                             <th>Status</th>
                             <th>Detail</th>
+                            <th>Update</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,11 +79,18 @@
                                 </button>
                             </td>
                             <td>
-                                <a th:href="@{'/counter/counterDetail/'+ ${counter.counterID}}">
+                                <a th:href="@{'/counter/counterDetail/'+ ${counter.counterID} }">
                                     <button class="detail-btn">
                                         <i class="fa-solid fa-file"></i>
                                     </button>
                                 </a>
+                            </td>
+                            <td>
+                              <a th:href="@{'/counter/editCounter/' + ${counter.counterID}}">
+                              <button class="detail-btn" onclick="showEditModal()">
+                                        Edit
+                               </button>
+                                  </a>
                             </td>
                         </tr>
                     </tbody>
@@ -129,7 +139,32 @@
         </div>
      </div>
     
-      
+       <div id="editModal" class="container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <form id="editForm" class="col-4 editForm" method="post" th:object="${counter}" th:action="@{/counter/editCounter/ + ${counter.counterID} + /update}">
+                <span class="close" onclick="hideEditModal()">&times;</span>
+                <div class="text-center edit-counter">Edit Counter</div>
+                <div class="group mt-4">
+                    <div class="col-12">
+                        <label>Counter Name</label>
+                        <input type="text" class="form-control" th:field="*{counterName}">
+                    </div>
+                        <div class="col-12">
+            <label>Active</label>
+            <select class="form-control" th:field="*{active}">
+                <option value="true" th:selected="${counter.active} == true">Active</option>
+                <option value="false" th:selected="${counter.active == false}">Inactive</option>
+            </select>
+        </div>
+                    <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-save" onclick="hideEditModal()">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
     
     <script type="text/javascript" th:src="@{/js/CounterList.js}"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -16,7 +16,6 @@ public class MaterialPriceList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int materialPriceListID;
 
-    @NotNull(message = "Vui lòng không để trống trường này")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "materialID", referencedColumnName = "materialID", insertable = false, updatable = false)
     private Material material;
@@ -34,4 +33,6 @@ public class MaterialPriceList {
 
     @OneToMany(mappedBy = "materialPriceList")
     private List<Product> products;
+    
+   
     }
