@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PriceList</title>
-    <link rel="stylesheet" th:href="@{/css/PriceList.css}">
+    <title>Manage Material</title>
+    <link rel="stylesheet" th:href="@{/css/ManagePrice.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -26,78 +26,86 @@
                     </div>
                 </div>
             </div>
-           <a class="link-product" th:href="@{/dashboard}"><p>Dashboard</p></a>
-        <a class="link-product" th:href="@{/manager/products}"><p>Manage Product</p></a>
-         <a  class="link-product" th:href="@{/staff}"><p>Manage Staff</p></a>
-        <a class="link-product" th:href="@{/promotion}"><p>Promotion</p></a>
-        <a  class="link-product" th:href="@{/manager-profile}"><p>Personal Profile</p></a>
-        <a class="link-product" th:href="@{/counter}"><p>Manage Counter</p></a>
-        <p class="active">Manage Material</p>
-        <a class="link-product" th:href="@{/price-list}"><p>Material Price List</p></a>
-           <a class="link-product" th:href="@{/gem-price-list}"><p>Gem Price List</p></a>
+            <a class="link-product" th:href="@{/dashboard}"><p>Dashboard</p></a>
+            <a class="link-product" th:href="@{/manager/products}"><p>Manage Product</p></a>
+            <a class="link-product" th:href="@{/staff}"><p>Manage Staff</p></a>
+            <a class="link-product" th:href="@{/promotion}"><p>Promotion</p></a>
+            <a class="link-product" th:href="@{/manager-profile}"><p>Personal Profile</p></a>
+            <a class="link-product" th:href="@{/counter}"><p>Manage Counter</p></a>
+            <p class="active">Manage Material</p>
+            <a class="link-product" th:href="@{/price-list}"><p>Material Price List</p></a>
+            <a class="link-product" th:href="@{/gem-price-list}"><p>Gem Price List</p></a>
         </div>
-       <form th:action="@{/perform_logout}" method="post">
+        <form th:action="@{/perform_logout}" method="post">
             <button type="submit"> 
                 <i class="fa-solid fa-right-from-bracket"></i> Log out
             </button>
         </form>
     </div>
     <div class="content">
-         <div class="bill-header">
-                <h1>Promotion</h1>
-                <div class="bill-details">
+        <div class="bill-header">
+            <h1>Manage Material</h1>
+            <div class="bill-details mt-4">
                 <div class="staff">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input class="staff-input" id="searchInput" onkeyup="searchProducts()"
                         placeholder="Search by promotion name..." />
                 </div>
             </div>
-            
-          
-        <div class="bill-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Material</th>
-                        <th>Clarity</th>
-                        <th>Color</th>
-                        <th>Cut</th>
-                        <th>Carat</th>
-                        <th>Buy Price</th>
-                        <th>Sell Price</th>
-                        <th>Apply Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                   
-                </tbody>
-            </table>
+            <div class="bill-table mt-5">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Type</th>
+                            <th>Clarity</th>
+                            <th>Color</th>
+                            <th>Cut</th>
+                            <th>Carat</th>
+                            <th>Buy Price</th>
+                            <th>Sell Price</th>
+                            <th>Apply Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="product : ${products}">
+                            <td th:text="${product.typeID == 2 ? product.materialPriceList.material.name : product.gemPriceList.gem.gemName}"></td>
+                             <td th:text="${product.type.typeName}"></td>
+                            <td th:text="${product.typeID == 2 ? '' : product.gemPriceList.gem.clarity}"></td>
+                            <td th:text="${product.typeID == 2 ? '' : product.gemPriceList.gem.color}"></td>
+                            <td th:text="${product.typeID == 2 ? '' : product.gemPriceList.gem.cut}"></td>
+                            <td th:text="${product.typeID == 2 ? '' : product.gemPriceList.gem.carat}"></td>
+                            <td th:text="${product.typeID == 2 ? product.materialPriceList.buyPrice : product.gemPriceList.buyPrice}"></td>
+                            <td th:text="${product.typeID == 2 ? product.materialPriceList.sellPrice : product.gemPriceList.sellPrice}"></td>
+                            <td th:text="${product.typeID == 2 ? product.materialPriceList.applyDate : product.gemPriceList.applyDate}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-          </div>
         <div class="pagination-container">
-                <div class="previous">
-                    <a th:if="${currentPage > 0}" th:href="@{/manage-material(page=${currentPage - 1 })}">
-                        <button class="btn-previous"> <i class="fa-solid fa-arrow-left i-left"></i>Previous</button>
-                    </a>
-                </div>
-                <div class="pages">
-                    <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
-                        th:class="${pageNumber == currentPage} ? 'page-active' : ''">
-                        <a th:href="@{/manage-material(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
-                    </span>
-                </div>
-                <div class="next">
-                    <a th:if="${currentPage < totalPages - 1}" th:href="@{/manage-material(page=${currentPage + 1})}">
-                        <button class="btn-next"> Next <i class="fa-solid fa-arrow-right i-right"></i></button>
-                    </a>
-                </div>
+            <div class="previous">
+                <a th:if="${currentPage > 0}" th:href="@{/manage-material(page=${currentPage - 1})}">
+                    <button class="btn-previous"><i class="fa-solid fa-arrow-left i-left"></i>Previous</button>
+                </a>
             </div>
+            <div class="pages">
+                <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
+                      th:class="${pageNumber == currentPage} ? 'page-active' : ''">
+                    <a th:href="@{/manage-material(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+                </span>
             </div>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <div class="next">
+                <a th:if="${currentPage < totalPages - 1}" th:href="@{/manage-material(page=${currentPage + 1})}">
+                    <button class="btn-next">Next <i class="fa-solid fa-arrow-right i-right"></i></button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script>
+    <script>
         function searchProducts() {
             var input, filter, table, tr, td, i, txtValue;
             input = document.getElementById("searchInput");
@@ -106,7 +114,7 @@
             tr = table.getElementsByTagName("tr");
 
             for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0]; 
+                td = tr[i].getElementsByTagName("td")[0];
                 if (td) {
                     txtValue = td.textContent || td.innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -117,8 +125,6 @@
                 }
             }
         }
-
-        </script>
+    </script>
 </body>
-
 </html>

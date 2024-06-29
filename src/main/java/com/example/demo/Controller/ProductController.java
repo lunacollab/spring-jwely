@@ -305,14 +305,13 @@ public class ProductController {
 	  @GetMapping("/manage-material")
 	    public String showManageMaterial(Model model, @RequestParam(defaultValue = "0") int page, 
 	                                @RequestParam(defaultValue = "10") int size) {
-	        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-	        Staff staff = staffRepository.findByEmail(email);
-	        PageRequest pageable = PageRequest.of(page, size );
-	        Page<Material> MaterialManagePage = materialService.findAllMaterialList(pageable);
-	        model.addAttribute("currentPage", MaterialManagePage.getNumber());
-	        model.addAttribute("totalPages", MaterialManagePage.getTotalPages()); 
-	        model.addAttribute("materialPage", MaterialManagePage);
-	        model.addAttribute("staff", staff);
+		      Page<Product> productPage = productService.findAll(PageRequest.of(page, 10));
+	        model.addAttribute("products", productPage.getContent());
+	        model.addAttribute("currentPage", productPage.getNumber());
+	        model.addAttribute("totalPages", productPage.getTotalPages());
+	           String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		       Staff staff = staffRepository.findByEmail(email);
+		       model.addAttribute("staff", staff);
 	        return "manager/manageMaterial";
 	    }
 }
