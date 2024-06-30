@@ -1,6 +1,7 @@
 package com.example.demo.ServiceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,12 @@ public class GemPriceListServiceImpl implements GemPriceListService {
    public GemPriceList save(GemPriceList gemPriceList) {
        return gemPriceListRepository.save(gemPriceList);
    }
-
-   
+   @Override
+   public List<GemPriceList> getGemPriceListById(int id) {
+       return gemPriceListRepository.findByGemID(id);
+   }
+   @Override
+   public Optional<GemPriceList> findGemPriceListById(Integer id) {
+       return gemPriceListRepository.findById(id);
+   }
 }

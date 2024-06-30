@@ -3,6 +3,7 @@ package com.example.demo.Controller;
 
 import com.example.demo.Entity.Counter;
 import com.example.demo.Entity.GemPriceList;
+import com.example.demo.Entity.MaterialPriceList;
 import com.example.demo.Entity.Material;
 import com.example.demo.Entity.Product;
 import com.example.demo.Entity.Promotion;
@@ -17,6 +18,7 @@ import com.example.demo.Service.ProductService;
 import com.example.demo.Service.PromotionService;
 import com.example.demo.Service.TypeService;
 import com.example.demo.saveLog.csvlog;
+import com.example.demo.saveLog.csvlog2;
 import com.example.demo.Entity.MaterialPriceList;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -198,6 +200,7 @@ public class ProductController {
         return "manager/priceList";
     }
 
+    
     private String getMaterialName(int materialID) {
         switch (materialID) {
             case 1:
@@ -230,7 +233,17 @@ public class ProductController {
 
         return "redirect:/price-list";
     } 
+    @GetMapping("price-list/update/{priceListID}") 
+    public String showPriceListDetail(@PathVariable Integer priceListID, Model model) { 
+    	 Optional<MaterialPriceList> materialPriceListOpt = materialPriceListService.findMaterialPriceListById(priceListID);
+        model.addAttribute("materialPriceList", materialPriceListOpt.get());
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
+        return "manager/editMaterialPriceList";
+    } 
     
+  
     @GetMapping("/gem-price-list")
     public String showGemPriceList(Model model, @RequestParam(defaultValue = "0") int page, 
                                 @RequestParam(defaultValue = "10") int size) {
@@ -245,6 +258,20 @@ public class ProductController {
         model.addAttribute("staff", staff);
         return "manager/gemPriceList";
     }
+    private String getGemName(int gemID) {
+        switch (gemID) {
+            case 1:
+                return "Diamond";
+            case 2:
+                return "Emerald";
+            case 3:
+                return "Ruby";
+            case 4:
+                return "Sapphire";
+            default:
+                return "Unknown material";
+        }
+    }
     @PostMapping("/gem-price-list")
     public String saveGemPriceList(Model model, GemPriceList gemPriceList) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -252,8 +279,26 @@ public class ProductController {
         gemPriceList.setApplyDate(new Date());
         model.addAttribute("staff", staff);
         gemPriceListService.save(gemPriceList);
+        String gemName = getGemName(gemPriceList.getGemID());
+        String logEntry = String.format("%s, Saved game price list: ApplyDate: %s, Name: %s, BuyPrice: %.2f, SellPrice: %.2f",
+                                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()),
+                                        gemPriceList.getApplyDate(), 
+                                        gemName, 
+                                        gemPriceList.getBuyPrice(), 
+                                        gemPriceList.getSellPrice());
+        csvlog2.log(logEntry);
+
         return "redirect:/gem-price-list";
     } 
+    @GetMapping("gem-price-list/update/{gemPriceListID}") 
+    public String showGemPriceListDetail(@PathVariable Integer gemPriceListID, Model model) { 
+    	 Optional<GemPriceList> gemPriceListOpt = gemPriceListService.findGemPriceListById(gemPriceListID);
+        model.addAttribute("gemPriceList", gemPriceListOpt.get());
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	       Staff staff = staffRepository.findByEmail(email);
+	       model.addAttribute("staff", staff);
+        return "manager/editGemPriceList";
+    }
 	@GetMapping("/counter")
 	public String counterList(Model model,@RequestParam(defaultValue = "0") int page, 
             @RequestParam(defaultValue = "10") int size) {
@@ -305,7 +350,7 @@ public class ProductController {
 	  @GetMapping("/manage-material")
 	    public String showManageMaterial(Model model, @RequestParam(defaultValue = "0") int page, 
 	                                @RequestParam(defaultValue = "10") int size) {
-		      Page<Product> productPage = productService.findAll(PageRequest.of(page, 10));
+		      Page<Material> productPage = materialService.findAllMaterialList(PageRequest.of(page, 10));
 	        model.addAttribute("products", productPage.getContent());
 	        model.addAttribute("currentPage", productPage.getNumber());
 	        model.addAttribute("totalPages", productPage.getTotalPages());

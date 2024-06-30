@@ -110,10 +110,11 @@
                             <div class="row">
                                 <div class="col-6 form-group">
                                     <label>Material Name</label>
-                                    <select th:field=*{gemID}>
-                                      <option value=1 th:selected="${gemPriceList.gemID == 1}">18k gold</option>
-                                      <option value=2 th:selected="${gemPriceList.gemID == 2}">24k gold</option>
-                                      <option value=3 th:selected="${gemPriceList.gemID == 3}">9999 pure gold</option>
+                                   <select th:field=*{gemID}>
+                                      <option value=1 th:selected="${gemPriceList.gemID == 1}">Diamond</option>
+                                      <option value=2 th:selected="${gemPriceList.gemID == 2}">Emerald</option>
+                                      <option value=3 th:selected="${gemPriceList.gemID == 3}">Ruby</option>
+                                       <option value=4 th:selected="${gemPriceList.gemID == 4}">Sapphire</option>
                                     </select>
                                 </div>
                             <div class="col-6 form-group">

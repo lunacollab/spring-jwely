@@ -35,4 +35,9 @@ public class MaterialPriceListServiceImpl implements MaterialPriceListService{
 	    public MaterialPriceList save(MaterialPriceList materialPriceList) {
 	        return materialPriceListRepository.save(materialPriceList);
 	    }
+
+@Override
+public Optional<MaterialPriceList> findMaterialPriceListById(Integer id) {
+    return materialPriceListRepository.findById(id);
+}
 }
