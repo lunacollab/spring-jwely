@@ -32,7 +32,8 @@
         <a class="link-product" th:href="@{/promotion}"><p>Promotion</p></a>
         <a  class="link-product" th:href="@{/manager-profile}"><p>Personal Profile</p></a>
         <a class="link-product" th:href="@{/counter}"><p>Manage Counter</p></a>
-         <a  class="link-product" th:href="@{/manage-material}"><p>Manage Material</p></a>       
+         <a  class="link-product" th:href="@{/manage-material}"><p>Manage Material</p></a>
+         <a  class="link-product" th:href="@{/manage-gem}"><p>Manage Gem</p></a>          
          <a class="link-product" th:href="@{/price-list}"><p>Material Price List</p></a>
          <p class="active"> Gem Price List</p>
         </div>
@@ -61,6 +62,7 @@
                         <th>Buy Price</th>
                         <th>Sell Price</th>
                         <th>Apply Date</th>
+                        <th>Update</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,7 +74,14 @@
                         <td th:text="${gemPriceList.gem.carat}"></td>
                         <td th:text="${gemPriceList.buyPrice}"></td>
                          <td th:text="${gemPriceList.sellPrice}"></td>
-                        <td th:text="${#dates.format(gemPriceList.applyDate, 'yyyy-MM-dd hh:mm:ss a')}"></td>              
+                        <td th:text="${#dates.format(gemPriceList.applyDate, 'yyyy-MM-dd hh:mm:ss a')}"></td>         
+                        <td>
+                              <a th:href="@{'gem-price-list/update/' + ${gemPriceList.gemPriceListID}}">
+                              <button class="detail-btn">
+                                   Update
+                               </button>
+                                  </a>
+                            </td>     
                    </tr>
                    
                 </tbody>
@@ -102,19 +111,18 @@
     <div id="passwordModal" class="container">
             <div class="container">
                 <div class="row justify-content-center">
-                    <form action="/gem-price-list" method="post" id="promotionForm" class="col-5 passwordForm"
+                    <form th:action="@{/gem-price-list}" method="post" id="promotionForm" class="col-5 passwordForm"
                         th:object="${gemPriceList}">
                         <span class="close" onclick="hidePasswordModal()">&times;</span>
-                        <div class="text-center create-new-password">Create Price List </div>
+                        <div class="text-center create-new-password">Create Gem Price List </div>
                         <div class="group mt-4">
                             <div class="row">
                                 <div class="col-6 form-group">
                                     <label>Material Name</label>
                                    <select th:field=*{gemID}>
-                                      <option value=1 th:selected="${gemPriceList.gemID == 1}">Diamond</option>
-                                      <option value=2 th:selected="${gemPriceList.gemID == 2}">Emerald</option>
-                                      <option value=3 th:selected="${gemPriceList.gemID == 3}">Ruby</option>
-                                       <option value=4 th:selected="${gemPriceList.gemID == 4}">Sapphire</option>
+                                    <option th:each="gem : ${gem}"
+                        th:value="${gem.gemID}"
+                        th:text="${gem.gemName}"></option>
                                     </select>
                                 </div>
                             <div class="col-6 form-group">

@@ -32,7 +32,8 @@
         <a class="link-product" th:href="@{/promotion}"><p>Promotion</p></a>
         <a  class="link-product" th:href="@{/manager-profile}"><p>Personal Profile</p></a>
         <a class="link-product" th:href="@{/counter}"><p>Manage Counter</p></a>
-          <a  class="link-product" th:href="@{/manage-material}"><p>Manage Material</p></a>       
+          <a  class="link-product" th:href="@{/manage-material}"><p>Manage Material</p></a>  
+             <a  class="link-product" th:href="@{/manage-gem}"><p>Manage Gem</p></a>     
          <p class="active"> Material Price List</p>
            <a class="link-product" th:href="@{/gem-price-list}"><p>Gem Price List</p></a>
         </div>
@@ -57,7 +58,7 @@
                         <th>Buy Price</th>
                         <th>Sell Price</th>
                         <th>Apply Date</th>
-        
+                         <th>Update</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,7 +66,14 @@
                         <td th:text="${materialPrice.material.name}"></td>
                         <td th:text="${materialPrice.buyPrice}"></td>
                          <td th:text="${materialPrice.sellPrice}"></td>
-                        <td th:text="${#dates.format(materialPrice.applyDate, 'yyyy-MM-dd hh:mm:ss a')}"></td>              
+                        <td th:text="${#dates.format(materialPrice.applyDate, 'yyyy-MM-dd hh:mm:ss a')}"></td>
+                         <td>
+                              <a th:href="@{'price-list/update/' + ${materialPrice.materialPriceListID}}">
+                              <button class="detail-btn">
+                                   Update
+                               </button>
+                                  </a>
+                            </td>                   
                    </tr>
                    
                 </tbody>
@@ -95,18 +103,18 @@
     <div id="passwordModal" class="container">
             <div class="container">
                 <div class="row justify-content-center">
-                    <form action="/price-list" method="post" id="promotionForm" class="col-5 passwordForm"
+                    <form th:action="@{/price-list}" method="post" id="promotionForm" class="col-5 passwordForm"
                         th:object="${materialPrice}">
                         <span class="close" onclick="hidePasswordModal()">&times;</span>
-                        <div class="text-center create-new-password">Create Price List </div>
+                        <div class="text-center create-new-password">Create Material Price List </div>
                         <div class="group mt-4">
                             <div class="row">
                                 <div class="col-6 form-group">
                                     <label>Material Name</label>
                                     <select th:field=*{materialID}>
-                                      <option value=1 th:selected="${materialPrice.materialID == 1}">18k gold</option>
-                                      <option value=2 th:selected="${materialPrice.materialID == 2}">24k gold</option>
-                                      <option value=3 th:selected="${materialPrice.materialID == 3}">9999 pure gold</option>
+                                      <option th:each="material : ${material}"
+                        th:value="${material.materialID}"
+                        th:text="${material.name}"></option>
                                     </select>
                                 </div>
                             <div class="col-6 form-group">

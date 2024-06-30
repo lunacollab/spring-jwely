@@ -11,4 +11,5 @@ public interface GemPriceListService {
    List<GemPriceList> getAllGemPriceLists();
    Page<GemPriceList> findAllGemPriceList(Pageable pageable);
     GemPriceList save(GemPriceList gemPriceList);
+    GemPriceList update(GemPriceList gemPriceList);
 }

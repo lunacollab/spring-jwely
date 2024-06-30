@@ -39,4 +39,8 @@ public class GemPriceListServiceImpl implements GemPriceListService {
    public Optional<GemPriceList> findGemPriceListById(Integer id) {
        return gemPriceListRepository.findById(id);
    }
+   @Override
+   public GemPriceList update(GemPriceList gemPriceList) {
+         return gemPriceListRepository.save(gemPriceList);
+   }
 }

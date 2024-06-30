@@ -31,10 +31,10 @@
         <a class="link-product" th:href="@{/promotion}"><p>Promotion</p></a>
         <a  class="link-product" th:href="@{/manager-profile}"><p>Personal Profile</p></a>
         <a class="link-product" th:href="@{/counter}"><p>Manage Counter</p></a>
-          <a  class="link-product" th:href="@{/manage-material}"><p>Manage Material</p></a>       
+          <a  class="link-product" th:href="@{/manage-material}"><p>Manage Material</p></a>
+          <a  class="link-product" th:href="@{/manage-gem}"><p>Manage Gem</p></a>          
          <p class="active"> Material Price List</p>
            <a class="link-product" th:href="@{/gem-price-list}"><p>Gem Price List</p></a>
-          
         </div>
         <form th:action="@{/perform_logout}" method="post">
             <button type="submit">
@@ -47,24 +47,33 @@
        <div id="editModal" class="container">
     <div class="container">
         <div class="row justify-content-center">
-<form id="editForm" class="col-4 editForm" method="post" th:object="${counter}" th:action="@{/counter/editCounter/{counterID}/update(counterID=${counter.counterID})}">
-                <div class="text-center edit-counter">Edit Counter</div>
-                <div class="group mt-4">
-                    <div class="col-12">
-                        <label>Counter Name</label>
-                        <input type="text" class="form-control" th:field="*{counterName}">
-                    </div>
-                        <div class="col-12">
-            <label>Active</label>
-            <select class="form-control" th:field="*{active}">
-                <option value="true" th:selected="${counter.active} == true">Active</option>
-                <option value="false" th:selected="${counter.active == false}">Inactive</option>
-            </select>
-        </div>
-                    <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-save" onclick="hideEditModal()">Save</button>
-                    </div>
-                </div>
+<form id="editForm" class="col-4 editForm" method="post" th:object="${materialPriceList}" th:action="@{/price-list/update/{materialPriceListID}(materialPriceListID=${materialPriceList.materialPriceListID})}">
+             <div class="text-center create-new-password">Edit Material Price List </div>
+                        <div class="group mt-4">
+                            <div class="row">
+                                <div class="col-6 form-group">
+                                    <label>Material Name</label>
+                                    <select th:field="*{materialID}">
+                                      <option th:each="material : ${material}"
+                        th:value="${material.materialID}"
+                        th:text="${material.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label>Buy Price</label>
+                                    <input type="text" class="form-control" th:field="*{buyPrice}">
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-6 form-group">
+                                    <label>Sell Price</label>
+                                    <input type="text" class="form-control" th:field="*{sellPrice}">
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-save-password">Update</button>
+                            </div>
+                        </div>
             </form>
         </div>
     </div>

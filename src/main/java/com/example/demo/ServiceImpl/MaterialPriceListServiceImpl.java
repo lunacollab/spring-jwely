@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.Entity.GemPriceList;
 import com.example.demo.Entity.Material;
 import com.example.demo.Entity.MaterialPriceList;
 import com.example.demo.Repository.MaterialPriceListRepository;
@@ -39,5 +40,9 @@ public class MaterialPriceListServiceImpl implements MaterialPriceListService{
 @Override
 public Optional<MaterialPriceList> findMaterialPriceListById(Integer id) {
     return materialPriceListRepository.findById(id);
+}
+@Override
+public MaterialPriceList update(MaterialPriceList materialPriceList) {
+      return materialPriceListRepository.save(materialPriceList);
 }
 }

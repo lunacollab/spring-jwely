@@ -113,12 +113,6 @@ public class ProductServiceImpl implements ProductService {
             productRepository.save(product);
         } 
         if (product.getTypeID() == 1 && product.getGemPriceList() != null) {
-            Gem gem = product.getGemPriceList().getGem();
-            gem.setGemName("Diamond");
-            gem.setGemCode("GEM001");
-            gem = gemRepository.save(gem);
-            product.getGemPriceList().setGemID(gem.getGemID());
-            product.setGemPriceListID(2);
             product.setOrderType("Sell");
             product.setActive(true);
             productRepository.save(product);
