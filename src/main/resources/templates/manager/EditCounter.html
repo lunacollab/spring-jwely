@@ -53,6 +53,7 @@
                     <div class="col-12">
                         <label>Counter Name</label>
                         <input type="text" class="form-control" th:field="*{counterName}">
+                         <div th:if="${errorMessage}" class="error-message text-danger" th:text="${errorMessage}"></div>
                     </div>
                         <div class="col-12">
             <label>Active</label>

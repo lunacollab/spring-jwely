@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Counter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int counterID;
+    private Integer counterID;
     
     @Column(name="counterName")
     private String counterName;

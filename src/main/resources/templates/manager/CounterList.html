@@ -129,6 +129,7 @@
                             <div class="col-12">
                                 <label>Create Name</label>
                                 <input type="text" class="form-control" th:field="*{counterName}">
+                                   <div th:if="${errorMessage}" class="error-message text-danger" th:text="${errorMessage}"></div>
                             </div>
                             <div class="col-12 text-center">
                                 <button type="submit" class="btn btn-save-password" onclick="hidePasswordModal()">Create</button>

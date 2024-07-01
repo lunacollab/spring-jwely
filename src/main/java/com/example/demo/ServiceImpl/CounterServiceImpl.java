@@ -1,6 +1,7 @@
 package com.example.demo.ServiceImpl;
 
 import com.example.demo.Entity.Counter;
+import com.example.demo.Exception.DuplicateCounterNameException;
 import com.example.demo.Repository.CounterRepository;
 import com.example.demo.Service.CounterService;
 
@@ -24,6 +25,9 @@ public class CounterServiceImpl implements CounterService {
     }
     @Override
     public Counter saveCounter(Counter counter) {
+    	 if (counterRepository.existsByCounterName(counter.getCounterName())) {
+             throw new DuplicateCounterNameException("Counter name already exists");
+         }
         return counterRepository.save(counter);
     }
     @Override 
@@ -35,8 +39,12 @@ public class CounterServiceImpl implements CounterService {
         return counterRepository.findById(counterID);
     }
 
-    @Override
     public void updateCounter(Counter counter) {
+        Counter existingCounter = counterRepository.findByCounterName(counter.getCounterName());
+        if (existingCounter != null && !existingCounter.getCounterID().equals(counter.getCounterID())) {
+            throw new DuplicateCounterNameException("Counter name already exists.");
+        }
         counterRepository.save(counter);
     }
+
 }

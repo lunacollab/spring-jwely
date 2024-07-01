@@ -9,6 +9,7 @@ import com.example.demo.Entity.Material;
 import com.example.demo.Entity.Product;
 import com.example.demo.Entity.Promotion;
 import com.example.demo.Entity.Staff;
+import com.example.demo.Exception.DuplicateCounterNameException;
 import com.example.demo.Repository.StaffRepository;
 import com.example.demo.Service.CategoryService;
 import com.example.demo.Service.CounterService;
@@ -42,6 +43,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ProductController {
@@ -331,10 +333,15 @@ public class ProductController {
          model.addAttribute("staff", staff);
 		return "manager/counterList";
 	}
-    @PostMapping("/saveCounter")
-    public String saveCounter(@ModelAttribute Counter counter) {
-    	counter.setActive(true);
-        counterService.saveCounter(counter);
+	@PostMapping("/saveCounter")
+    public String saveCounter(@ModelAttribute Counter counter, RedirectAttributes redirectAttributes) {
+        try {
+            counter.setActive(true);
+            counterService.saveCounter(counter);
+        } catch (DuplicateCounterNameException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/counter";
+        }
         return "redirect:/counter";
     }
     @GetMapping("counter/editCounter/{counterID}")
@@ -352,7 +359,15 @@ public class ProductController {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Staff staff = staffRepository.findByEmail(email);
         model.addAttribute("staff", staff);
-        counterService.updateCounter(counter);
+
+        try {
+            counterService.updateCounter(counter);
+        } catch (DuplicateCounterNameException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("counter", counter);
+            return "manager/editCounter"; 
+        }
+
         return "redirect:/counter";
     }
 

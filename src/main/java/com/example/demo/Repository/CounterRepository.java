@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CounterRepository extends JpaRepository<Counter, Integer> {
+	  boolean existsByCounterName(String counterName);
+	  Counter findByCounterName(String counterName);
 }
