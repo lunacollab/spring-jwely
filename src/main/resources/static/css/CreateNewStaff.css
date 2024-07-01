@@ -21,7 +21,15 @@
 		   color: inherit;
             text-decoration: none;
 	   }
+.pagination-container a:focus,
+.pagination-container a:hover {
+    outline: none; 
+}
 
+    .pagination-container a {
+    text-decoration: none; 
+    color: inherit; 
+}
         .profile-container .img-profile {
             background   : url("../../assets/HeroImage.png") no-repeat center center;
             width        : 220px;

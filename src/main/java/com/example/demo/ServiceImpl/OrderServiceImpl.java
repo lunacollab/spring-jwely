@@ -13,12 +13,10 @@ import com.example.demo.Repository.TypeRepository;
 import com.example.demo.Service.CustomerService;
 import com.example.demo.Service.OrderService;
 import com.example.demo.dto.OrderDTO;
-import com.example.demo.dto.ProductOrderDTO;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -99,4 +97,5 @@ public class OrderServiceImpl implements OrderService {
 	    public void updateOrder(Order order) {
 	        orderRepository.save(order);
 	    }
+
 }

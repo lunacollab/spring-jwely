@@ -18,15 +18,18 @@
                 <div class="sidebar-pic"></div>
                 <div class="sidebar-name">
                     <div class="child-name">
-                        Trần Đại Dương
+                       <span th:text="${staff.fullName}"></span>
                     </div>
                     <div>
                         <span class="child-manager">Seller <i class="fa-solid fa-pencil"></i> </span>
                     </div>
                 </div>
             </div>
-           <p class="active">List Of Order</p>
-           <a class="link-historyOrder" th:href="@{/seller/products}">Product List as Counter</a>
+           <p class="active">List Of Sell Order</p>
+             <a class="link-historyOrder" th:href="@{/orders/listOfPurchaseOrder}"><p>List Of Purchase Order</p></a>
+           <a class="link-historyOrder" th:href="@{/seller/products}"><p>Product List as Counter<p></a>
+           <a class="link-historyOrder" th:href="@{/seller-profile}"><p>Personal Profile</p></a>
+           
         </div>
           <form th:action="@{/perform_logout}" method="post">
             <button type="submit"> 
@@ -86,12 +89,12 @@
             </div>
             <div class="bill-details">
                 <div class="staff">
-                    <input id="product-search" placeholder="Search" class="staff-input" onfocus="showDropdown()" />
+                    <input id="product-search" placeholder="Search" class="staff-input" onfocus="showDropdown()" onkeyup="filterProducts()"  />
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <div id="dropdown" class="dropdown-content">
                         <ol>
-                            <li th:each="product: ${products}">
-                                <div th:data-order="${product}" th:text="${product.productName}"
+                            <li th:each="product: ${products}" th:if="${product.isActive == true}">
+                                <div th:data-order="${product}" th:text="${product.productName + ' (' + product.type.typeName + ')'}"
                                     th:attr="data-product-id=${product.productID}"
                                     onclick="selectProduct(this.textContent, this.getAttribute('data-product-id'))"></div>
                             </li>
@@ -99,7 +102,7 @@
                     </div>
                 </div>
                 <div class="detail-add">
-                    <button type="button"  class="btn-add" onclick="addProduct()">Add</button>
+                    <button type="button" class="btn-add" onclick="addProduct()" onkeyup="filterProducts()">Add</button>
                 </div>
             </div>
             <div class="bill-table">
@@ -110,7 +113,11 @@
                             <th>Type</th>
                             <th>Product Name</th>
                             <th>Material</th>
-                            <th>Weight/Carat</th>
+                            <th>Weight</th>
+                             <th>Carat</th>
+                             <th>Clarity</th>
+                             <th>Cut</th>
+                             <th>Color</th>
                             <th>Price</th>
                             <th>Action</th>
                         </tr>
@@ -122,8 +129,16 @@
                             <td th:text="${Product.productName}"></td>
                            <td th:text="${Product.materialPriceList.material.name}"></td>
                             <td th:text="${Product.weight}"></td>
-                           <td th:text="${Product.MaterialPriceList.sellPrice * Product.weight}"></td>
-                             <td><i class="fa-solid fa-trash-can" onclick="removeProduct(this.parentElement.parentElement)"></i></td>
+                           <td th:text="${Product.type.typeName == 'Gold' ? '' : Product.gemPriceList.gem.carat}"></td>
+                          <td th:text="${Product.type.typeName == 'Gold' ? '' : Product.gemPriceList.gem.clarity}"></td>
+                           <td th:text="${Product.type.typeName == 'Gold' ? '' : Product.gemPriceList.gem.cut}"></td>
+                         <td th:text="${Product.type.typeName == 'Gold' ? '' : Product.gemPriceList.gem.color}"></td>
+                           <td th:text="${Product.MaterialPriceList.sellPrice * Product.weight + Product.gemPriceList.sellPrice}"></td>
+                           <td><a
+								th:href="@{/orders/new-sell-order(removeId=${Product.productID})}">
+									<i class="fa-solid fa-trash-can"></i>
+							</a></td>
+                             
                         </tr>
                     </tbody>
                 </table>

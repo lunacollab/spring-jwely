@@ -1,8 +1,11 @@
 package com.example.demo.ServiceImpl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Entity.Gem;
+import com.example.demo.Entity.GemPriceList;
 import com.example.demo.Repository.GemRepository;
 import com.example.demo.Service.GemService;
 
@@ -39,5 +42,9 @@ public class GemServiceImpl implements GemService{
     @Override
     public Gem getGemByGemCode(String gemCode) {
         return gemRepository.findByGemCode(gemCode);
+    }
+    @Override
+    public Page<Gem> findAllGemList(Pageable pageable) {
+        return gemRepository.findAll(pageable);
     }
 }

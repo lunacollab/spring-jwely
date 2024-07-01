@@ -30,6 +30,10 @@
             justify-content: flex-start;
             margin-top     : 20px;
         }
+            .pagination-container a {
+    text-decoration: none; 
+    color: inherit; 
+}
 
        .sidebar .sidebar-profile {
     display: flex;
@@ -356,7 +360,7 @@
             background-color: #26C75D;
         }
 
-        .pagination-container {
+       .pagination-container {
             display        : flex;
             height         : 47px;
             align-items    : center;
@@ -383,6 +387,10 @@
             display: flex;
             gap    : 15px;
         }
+.pagination-container a:focus,
+.pagination-container a:hover {
+    outline: none; 
+}
 
         .pagination-container .i-left {
             margin-right: 10px;
@@ -402,7 +410,7 @@
         .pagination-container .next {
             margin-right: 15px
         }
-
+      s
         .cancel-button:hover,
         .print-button:hover {
             opacity: 0.8;

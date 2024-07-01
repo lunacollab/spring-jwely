@@ -2,6 +2,10 @@ function showPasswordModal() {
   document.getElementById("passwordModal").style.display = "block";
   document.querySelector(".content-group").classList.add("overlay");
 }
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("passwordModal").style.display = "none";
+  document.getElementById('editModal').style.display = 'none';
+});
 
 function hidePasswordModal() {
   document.getElementById("passwordModal").style.display = "none";
@@ -30,3 +34,7 @@ function hidePasswordModal() {
             }
         }
     }
+	
+
+
+	

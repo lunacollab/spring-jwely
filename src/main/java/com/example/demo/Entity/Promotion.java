@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 import lombok.*;
 import javax.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Getter
@@ -17,10 +18,12 @@ public class Promotion {
 
     @NotNull(message="Vui lòng không để trống trường này")
     private String promotionCode;
-
     private String promotionName;
-    private float promotionPersent;
+    private String promotionPercent;
+    private boolean Status;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
     private String applyFor;
 }

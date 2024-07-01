@@ -1,5 +1,5 @@
 let selectedProductId = null;
-
+let doubleClickTimer = null;
 function showDropdown() {
     document.getElementById('dropdown').classList.add('show');
 }
@@ -51,7 +51,7 @@ function submitForm() {
 function calculateTotal() {
     let totalPrice = 0;
     document.querySelectorAll('tbody tr').forEach(row => {
-        const price = parseFloat(row.cells[5].innerText.replace(/,/g, '')) || 0;
+        const price = parseFloat(row.cells[9].innerText.replace(/,/g, '')) || 0;
         totalPrice += price;
     });
     document.getElementById('total-price').value = totalPrice.toFixed(1);
@@ -145,4 +145,27 @@ function saveData() {
     localStorage.setItem("staff-name", document.getElementById("staff-name").value);
     localStorage.setItem("customer-name", document.getElementById("customer-name").value);
     localStorage.setItem("phone-number", document.getElementById("phone-number").value);
+}
+
+function filterProducts() {
+    let input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById('product-search');
+    filter = input.value.trim().toUpperCase();
+    table = document.querySelector('.bill-table table');
+    tr = table.getElementsByTagName('tr');
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName('td')[2]; 
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = ''; 
+            } else {
+                tr[i].style.display = 'none'; 
+            }
+        }
+    }
+	clearTimeout(doubleClickTimer);
+	  doubleClickTimer = setTimeout(() => {
+	      document.getElementById('dropdown').classList.remove('show'); 
+	  }, 200); 
 }

@@ -16,15 +16,17 @@
                 <div class="sidebar-pic"></div>
                 <div class="sidebar-name">
                     <div class="child-name">
-                        Trần Đại Dương
+                        <span th:text="${staff.fullName}"></span>
                     </div>
                     <div>
                         <span class="child-manager">Seller<i class="fa-solid fa-pencil"></i> </span>
                     </div>
                 </div>
             </div>
-            <a class="link-listoforder" th:href="@{/orders/listOfOrder}"><p>List Of Order</p></a>
+            <a class="link-listoforder" th:href="@{/orders/listOfOrder}"><p>List Of Sell Order</p></a>
+              <a class="link-listoforder" th:href="@{/orders/listOfPurchaseOrder}"><p>List Of Purchase Order</p></a>
             <p class="active">Product List as Counter</p>
+             <a class="link-listoforder" th:href="@{/seller-profile}"><p>Personal Profile</p></a>
         </div>
         <form th:action="@{/perform_logout}" method="post">
             <button type="submit"> 
@@ -48,6 +50,7 @@
                     <tr>
                         <th>Name</th>
                         <th>ProductCode</th>
+                          <th>Counter Name</th>
                         <th>Status</th>
                         <th>Detail</th>
                     </tr>
@@ -56,6 +59,7 @@
                     <tr th:each="product : ${products}">
                         <td th:text="${product.productName}"></td>
                         <td th:text="${product.productCode}"></td>
+                          <td th:text="${product.counter.counterName}"></td>
                         <td>
                             <button th:classappend="${product.isActive} ? 'status complete' : 'status pending'">
                                 <span class="sf"><i class="fa-solid fa-circle"></i></span>

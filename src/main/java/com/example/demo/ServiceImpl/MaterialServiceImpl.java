@@ -1,9 +1,12 @@
 package com.example.demo.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Entity.Material;
+import com.example.demo.Entity.MaterialPriceList;
 import com.example.demo.Repository.MaterialRepository;
 import com.example.demo.Service.MaterialService;
 
@@ -30,6 +33,10 @@ public class MaterialServiceImpl implements MaterialService {
     public Material saveMaterial(Material material) {
         return materialRepository.save(material);
     }
+    @Override
+    public Material getMaterialByName(String name) {
+        return materialRepository.findByName(name).orElse(null);
+    }
 
     @Override
     public Material updateMaterial(Material material) {
@@ -40,4 +47,9 @@ public class MaterialServiceImpl implements MaterialService {
     public void deleteMaterial(int id) {
         materialRepository.deleteById(id);
     }
+    @Override
+    public Page<Material> findAllMaterialList(Pageable pageable) {
+        return materialRepository.findAll(pageable);
+    }
+
 }
